@@ -1,0 +1,25 @@
+<h1>My Hatebu</h1>
+
+<div class="main">
+  <div class="categories">
+    <h2>カテゴリ</h2>
+    <ul *ngIf="categories && categories.length">
+      <li *ngFor="let category of categories"><a [routerLink]="[]" (click)="onShowCategory(category)">{{ category.name }}</a></li>
+    </ul>
+  </div>
+  <div class="contents">
+    <div *ngIf="current">
+      <h2>{{ current.name }} ({{ current.path }})</h2>
+      <p>{{ current.updatedAt }}</p>
+    </div>
+    <dl *ngIf="current && current.entries && current.entries.length">
+      <ng-container *ngFor="let entry of current.entries">
+        <dt><a [href]="entry.url" target="_blank">{{ entry.title }}</a> [{{ entry.users }} Users] [{{ entry.date }}]</dt>
+        <dd>
+          <p>{{ entry.description }}</p>
+          <p><button type="button" (click)="onDeleteEntry(entry.url)">削除する</button></p>
+        </dd>
+      </ng-container>
+    </dl>
+  </div>
+</div>

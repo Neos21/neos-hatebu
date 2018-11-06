@@ -1,0 +1,16 @@
+<h1>ログイン</h1>
+<p>ログインしてください。</p>
+<form [formGroup]="loginForm">
+  <dl>
+    <dt>ユーザ ID</dt>
+    <dd>
+      <p><input type="text" formControlName="userId"></p>
+    </dd>
+    <dt>パスワード</dt>
+    <dd>
+      <p><input type="password" formControlName="password"></p>
+    </dd>
+  </dl>
+  <p><button type="button" (click)="onSubmit()">ログイン</button></p>
+</form>
+<p *ngIf="message"><strong>{{ message }}</strong></p>
