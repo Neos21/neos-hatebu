@@ -1,0 +1,26 @@
+{
+  "name": "neos-hatebu",
+  "description": "オレオレはてなブックマーク",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neos21/neos-hatebu.git"
+  },
+  "author": "Neo <neos21@gmail.com> (http://neo.s21.xrea.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Neos21/neos-hatebu/issues"
+  },
+  "homepage": "https://github.com/Neos21/neos-hatebu#readme",
+  "engines": {
+    "node": "10.x",
+    "npm": "6.1.x"
+  },
+  "dependencies": {
+    "express": "4.16.4"
+  }
+}
