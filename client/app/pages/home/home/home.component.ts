@@ -45,7 +45,11 @@ export class HomeComponent implements OnInit {
   }
   
   public onShowCategory(category: { id: number; name: string; path: string }): void {
-    console.log('移動');
+    if(category.id === 2) {
+      console.log('テストチェック');
+      this.apiEntriesService.test();
+    }
+    
     this.apiEntriesService.getEntries(category.id)
       .then((entryData) => {
         this.current.id   = category.id;

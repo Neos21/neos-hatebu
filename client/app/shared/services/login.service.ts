@@ -13,10 +13,9 @@ export class LoginService {
   
   public login(userId: string, password: string): Promise<any> {
     console.log('ログイン開始');
-    return Promise.resolve('ダミーログイン')  // this.httpClient.post(`${environment.apiUrl}/login`, { userId, password }).toPromise()
+    return this.httpClient.post(`${environment.apiUrl}/login`, { userId, password }).toPromise()
       .then((result) => {
-        console.log('ログイン成功', result);
-        // ローカル DB にログイン情報を保存する
+        console.log('ログイン成功・ローカル DB にログイン情報を保存', result);
         localStorage.setItem(AppConstants.localStorage.userInfoKey, JSON.stringify({ userId, password }));
       })
       .catch((error) => {

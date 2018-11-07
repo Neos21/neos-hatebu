@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { environment } from 'client/environments/environment.prod';
+
 const dummyCategories = [
   { id:  1, name: '総合 - 人気'          , path:  'hotentry/all'           },
   { id:  2, name: '総合 - 新着'          , path: 'entrylist/all'           },
@@ -55,5 +57,16 @@ export class ApiEntriesService {
         { users: 96, date: '2018-11-01 12:35', title: 'ほげ5', url: 'http://example.com/5', description: '説明5', favicon: 'http://example.com/5/favicon.png', thumb: 'http://example.com/5/thumb.png' }
       ]
     });
+  }
+  
+  public test(): Promise<any> {
+    // withCredentials: true が効き目なし・必要なところで毎度ログイン情報を渡すしかないのか？これって
+    return this.httpClient.get(`${environment.apiUrl}/member-only`, { params: { userId: 'Neos21', password: 'asdf'} }).toPromise()
+      .then((result) => {
+        console.log('認証できてる様子', result);
+      })
+      .catch((error) => {
+        console.error('ダメっぽい', error);
+      });
   }
 }
