@@ -60,8 +60,8 @@ export class ApiEntriesService {
   }
   
   public test(): Promise<any> {
-    // withCredentials: true が効き目なし・必要なところで毎度ログイン情報を渡すしかないのか？これって
-    return this.httpClient.get(`${environment.apiUrl}/member-only`, { params: { userId: 'Neos21', password: 'asdf'} }).toPromise()
+    // withCredentials: true はログイン時点から true にしておかないといけない
+    return this.httpClient.get(`${environment.apiUrl}/member-only`, { /*params: { userId: 'Neos21', password: 'asdf'},*/ withCredentials: true }).toPromise()
       .then((result) => {
         console.log('認証できてる様子', result);
       })

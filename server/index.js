@@ -104,7 +104,7 @@ passport.use('local', new LocalStrategy({
   }, (req, userId, password, done) => {
     console.log('認証ロジック開始', { userId, password });
     if(userId === 'Neos21') {
-      req.session.user = userId; console.log(req.session);
+      req.session.user = userId; console.log(req.session);  // コレ要らない
       return done(null, userId);  // 成功・第2引数で渡す内容がシリアライズされる
     }
     else {
@@ -139,7 +139,7 @@ app.get('/logout', (req, res) => {
 const isAuthenticated = (req, res, next) => {
   console.log(req.user, req.session);
   console.log(res.locals);
-  if(req.session.user) {  // req.isAuthenticated()
+  if(req.isAuthenticated() /*req.session.user*/) {
     console.log('認証チェック OK');
     return next();
   }
@@ -150,7 +150,7 @@ const isAuthenticated = (req, res, next) => {
 }
 
 // ココで isAuthenticated を使いたかったが、セッションを特定する情報をクライアントから送れていないようで上手くいかなかった
-app.get('/member-only', passport.authenticate('local'), (req, res) => {
+app.get('/member-only', isAuthenticated /*passport.authenticate('local')*/, (req, res) => {
   console.log('メンバオンリー', { userInfo: req.user, content: `Member Only!` })
   res.json({ userInfo: req.user, content: `Member Only!` });
 });
@@ -176,6 +176,9 @@ https://blog.kazu69.net/2017/03/23/http-request-using-cors/
   CORS ポリシーエラーのところ
 
 https://gist.github.com/kikuchy/5912004
+
+https://kakkoyakakko2.hatenablog.com/entry/2018/05/29/215409
+  withCredentials をログイン時から全て有効にしておかないといけない
  */
 
 // ====================================================================================================
