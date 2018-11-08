@@ -60,23 +60,12 @@ export class ApiEntriesService {
   }
   
   public test(): Promise<any> {
-    // withCredentials: true はログイン時点から true にしておかないといけない
-    return this.httpClient.get(`${environment.serverUrl}/member-only`, { withCredentials: true }).toPromise()
+    return this.httpClient.get(`${environment.serverUrl}/member-only`).toPromise()
       .then((result) => {
         console.log('認証できてる様子', result);
       })
       .catch((error) => {
         console.error('ダメっぽい', error);
-      });
-  }
-  
-  public test2(): Promise<any> {
-    return this.httpClient.get(`${environment.serverUrl}/logout`, { withCredentials: true }).toPromise()
-      .then((result) => {
-        console.log('ログアウトした', result);
-      })
-      .catch((error) => {
-        console.error('ログアウトできなかった', error);
       });
   }
 }

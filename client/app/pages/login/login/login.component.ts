@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { LoginService } from '../../../shared/services/login.service';
-import { AppConstants } from '../../../shared/constants/app-constants';
+import { appConstants } from '../../../shared/constants/app-constants';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,9 @@ import { AppConstants } from '../../../shared/constants/app-constants';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  /** ログインフォーム */
   public loginForm: FormGroup;
+  /** フィードバックメッセージ */
   public message: string = '';
   
   constructor(
@@ -19,7 +21,10 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private loginService: LoginService
   ) { }
-
+  
+  /**
+   * 画面初期表示時の処理
+   */
   public ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       userId  : ['', [Validators.required]],
@@ -27,17 +32,23 @@ export class LoginComponent implements OnInit {
     });
     
     // ログイン画面に遷移した時はログインユーザ情報を削除しておく
-    localStorage.removeItem(AppConstants.localStorage.userInfoKey);
+    localStorage.removeItem(appConstants.localStorage.userInfoKey);
+    
+    // 初期表示時に表示するフィードバックメッセージがあれば表示する
+    const initMessage = sessionStorage.getItem(appConstants.sessionStorage.loginInitMessageKey);
+    sessionStorage.removeItem(appConstants.sessionStorage.loginInitMessageKey);
+    if(initMessage) {
+      this.message = initMessage;
+    }
   }
   
+  /**
+   * 「ログイン」ボタン押下時の処理
+   */
   public onSubmit(): void {
-    if(this.loginForm.invalid) {
-      this.message = 'フォーム不正';
-      return;
-    }
-    
     this.loginService.login(this.loginForm.value.userId, this.loginForm.value.password)
       .then(() => {
+        console.log('ログイン成功');
         this.router.navigate(['/home']);
       })
       .catch((error) => {

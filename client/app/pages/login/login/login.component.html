@@ -1,5 +1,6 @@
 <h1>ログイン</h1>
 <p>ログインしてください。</p>
+
 <form [formGroup]="loginForm">
   <dl>
     <dt>ユーザ ID</dt>
@@ -11,6 +12,7 @@
       <p><input type="password" formControlName="password"></p>
     </dd>
   </dl>
-  <p><button type="button" (click)="onSubmit()">ログイン</button></p>
+  <p><button type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">ログイン</button></p>
 </form>
+
 <p *ngIf="message"><strong>{{ message }}</strong></p>

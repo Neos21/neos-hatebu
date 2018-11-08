@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ApiEntriesService } from '../../../shared/services/api-entries.service';
-import { NgDataStoreService } from '../../../shared/services/ng-data-store.service';
 import { ApiNgUrlsService } from '../../../shared/services/api-ng-urls.service';
+import { LogoutService } from '../../../shared/services/logout.service';
 
 @Component({
   selector: 'app-home',
@@ -10,19 +11,27 @@ import { ApiNgUrlsService } from '../../../shared/services/api-ng-urls.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  /** カテゴリ一覧 */
   public categories: any[] = [];
+  
+  /** 表示中のカテゴリのデータ */
   public current: any = {
     id: 0,
+    /** カテゴリ名 */
     name: '',
-    path: '',  // 要らないかも
+    /** 要らない？ */
+    path: '',
+    /** 最終クロール日時 */
     updatedAt: '',
+    /** エントリ一覧 */
     entries: []
   };
   
   constructor(
+    private router: Router,
     private apiEntriesService: ApiEntriesService,
     private apiNgUrlsService: ApiNgUrlsService,
-    private ngDataStoreService: NgDataStoreService
+    private logoutService: LogoutService
   ) { }
   
   public ngOnInit(): void {
@@ -36,8 +45,7 @@ export class HomeComponent implements OnInit {
         return this.apiNgUrlsService.getNgUrls();
       })
       .then((ngUrls) => {
-        // NG URL 一覧をサービスに控えておく
-        this.ngDataStoreService.ngUrls = ngUrls;
+        // TODO : NG URL 一覧をサービスに控えておく
         
         // 「総合 - 人気」を初期表示する
         return this.onShowCategory(this.categories[0]);
@@ -48,10 +56,6 @@ export class HomeComponent implements OnInit {
     if(category.id === 2) {
       console.log('テストチェック');
       this.apiEntriesService.test();
-    }
-    else if(category.id === 3) {
-      console.log('テストログアウト');
-      this.apiEntriesService.test2();
     }
     
     this.apiEntriesService.getEntries(category.id)
@@ -64,7 +68,7 @@ export class HomeComponent implements OnInit {
         this.current.entries = entryData.entries
           .filter((entry) => {
             // NG URL 一覧に合致する URL がなかったモノのみ残す
-            return !this.ngDataStoreService.ngUrls.find((ngUrl) => {
+            return !/*this.ngDataStoreService.ngUrls*/['test'].find((ngUrl) => {
               return ngUrl === entry.url;
             });
           });
@@ -79,12 +83,19 @@ export class HomeComponent implements OnInit {
     this.apiNgUrlsService.addNgUrl(url)
       .then(() => {
         // NG URL 一覧のローカルに追加する
-        this.ngDataStoreService.ngUrls.push(url);
+        // this.ngDataStoreService.ngUrls.push(url);
         // エントリ一覧から削除する
         this.current.entries = this.current.entries
           .filter((entry) => {
             return entry.url !== url;
           });
+      });
+  }
+  
+  public onLogout(): void {
+    this.logoutService.logout()
+      .then(() => {
+        this.router.navigate(['/login']);
       });
   }
 }
