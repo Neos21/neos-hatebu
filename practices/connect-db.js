@@ -1,6 +1,10 @@
 const pg = require('pg');
 
-const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/my_local_db';
+// 設定をロードする
+require('dotenv').config();
+
+// 接続先 URL
+const connectionString = process.env.DATABASE_URL; // || 'postgres://postgres:postgres@localhost:5432/my_local_db';
 
 console.log(`接続開始 : ${connectionString}`);
 const pool = new pg.Pool({
