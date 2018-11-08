@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
  * users テーブル
  * 
  * @param sequelize Sequelize インスタンス
- * @return user テーブルのモデル
+ * @return テーブルのモデル
  */
 module.exports = (sequelize) => {
   // モデルを定義する

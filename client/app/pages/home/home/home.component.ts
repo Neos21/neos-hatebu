@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     // カテゴリ一覧を取得する (エントリを控えるテーブルからエントリ情報を除いて SELECT する)
     this.apiEntriesService.getCategories()
       .then((categories) => {
-        // カテゴリ一覧を控えておく
+        // カテゴリ一覧をメニューとして表示する
         this.categories = categories;
         
         // NG URL 一覧を取得する
