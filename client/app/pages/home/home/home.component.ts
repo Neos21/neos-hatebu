@@ -49,6 +49,10 @@ export class HomeComponent implements OnInit {
       console.log('テストチェック');
       this.apiEntriesService.test();
     }
+    else if(category.id === 3) {
+      console.log('テストログアウト');
+      this.apiEntriesService.test2();
+    }
     
     this.apiEntriesService.getEntries(category.id)
       .then((entryData) => {

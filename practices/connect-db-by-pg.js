@@ -59,5 +59,3 @@ pool.query('SELECT * FROM test_table')
 //   }
 //   pool.end();
 // });
-
-// https://node-postgres.com/features/connecting

@@ -17,7 +17,7 @@ const TestTableModel = sequelize.define('TestTable', {
   },
   name: Sequelize.TEXT
 }, {
-  // define() の第1引数の文字列をそのままテーブル名として使用する : https://stackoverflow.com/questions/21114499/how-to-make-sequelize-use-singular-table-names
+  // define() の第1引数の文字列をそのままテーブル名として使用する
   // freezeTableName: true,
   // define() の第1引数を別名 (AS) にし、実際のテーブル名を記す
   tableName: 'test_table',
