@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiEntriesService } from '../../../shared/services/api-entries.service';
 import { ApiNgUrlsService } from '../../../shared/services/api-ng-urls.service';
 import { LogoutService } from '../../../shared/services/logout.service';
+import { CategoriesService } from '../../../shared/services/categories.service';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
   
   constructor(
     private router: Router,
+    private categoriesService: CategoriesService,
     private apiEntriesService: ApiEntriesService,
     private apiNgUrlsService: ApiNgUrlsService,
     private logoutService: LogoutService
@@ -36,19 +38,15 @@ export class HomeComponent implements OnInit {
   
   public ngOnInit(): void {
     // カテゴリ一覧を取得する (エントリを控えるテーブルからエントリ情報を除いて SELECT する)
-    this.apiEntriesService.getCategories()
+    this.categoriesService.findAll()
       .then((categories) => {
         // カテゴリ一覧をメニューとして表示する
         this.categories = categories;
         
-        // NG URL 一覧を取得する
-        return this.apiNgUrlsService.getNgUrls();
-      })
-      .then((ngUrls) => {
-        // TODO : NG URL 一覧をサービスに控えておく
+        // TODO : NG 情報を取得する
         
-        // 「総合 - 人気」を初期表示する
-        return this.onShowCategory(this.categories[0]);
+        // 
+        return this.onShowCategory(this.categories[0].id);
       });
   }
   

@@ -3,9 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const Model = require('../models/model');
 
-/**
- * Passport の認証・シリアライズ処理を行う関数を返す
- */
+/** Passport の認証・シリアライズ処理を行う関数を返す */
 module.exports = () => {
   // 認証ロジック
   passport.use('local', new LocalStrategy({
