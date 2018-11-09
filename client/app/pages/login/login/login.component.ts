@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   public ngOnInit(): void {
     // フォームを定義する
     this.loginForm = this.formBuilder.group({
-      userId  : ['', [Validators.required]],
+      userName: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
     
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
    * 「ログイン」ボタン押下時の処理
    */
   public onSubmit(): void {
-    this.loginService.login(this.loginForm.value.userId, this.loginForm.value.password)
+    this.loginService.login(this.loginForm.value.userName, this.loginForm.value.password)
       .then(() => {
         console.log('ログイン成功');
         this.router.navigate(['/home']);

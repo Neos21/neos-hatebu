@@ -13,14 +13,10 @@ router.use((req, _res, next) => {
   next();
 });
 
-// ルートで Angular アプリを提供する
-router.use('/', require('./angular-app-router'));
-
-// ログイン・ログアウト
-router.use('/', require('./auth-router'));
-
-// カテゴリ
-router.use('/categories', require('./categories-router'));
+router.use('/'          , require('./angular-app-router'));  // ルートで Angular アプリを提供する
+router.use('/'          , require('./auth-router'       ));  // ログイン・ログアウト
+router.use('/categories', require('./categories-router' ));  // カテゴリ
+router.use('/ng-data'   , require('./ng-data-router'    ));  // NG 情報
 
 
 

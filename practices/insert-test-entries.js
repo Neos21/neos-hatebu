@@ -43,18 +43,23 @@ htmls.forEach(($, categoryIndex) => {
     const description = $(element).find('.entrylist-contents-description').text();
     // Favicon URL
     const faviconUrl = $(element).find('.entrylist-contents-domain img').attr('src');
-    // サムネイル
-    const thumbnailUrl = `${$(element).find('.entrylist-contents-thumb span').attr('style')}`.replace('background-image:url(\'', '').replace('\');', '');
+    // サムネイル : サムネイルがない記事は span 要素がなく、最終的な文字列が 'undefined' になる
+    let thumbnailUrl = `${$(element).find('.entrylist-contents-thumb span').attr('style')}`.replace('background-image:url(\'', '').replace('\');', '');
+    if(thumbnailUrl === 'undefined') { thumbnailUrl = ''; }
     
     // エントリ一覧に追加する
     entries.push({ categoryId, count, date, title, url, description, faviconUrl, thumbnailUrl });
   });
-})
+});
+
+console.log(`INSERT 件数 : ${entries.length}`);
 
 // DB 接続する
 const connectionString = process.env.DATABASE_URL;
 console.log('接続開始', connectionString);
-const sequelize = new Sequelize(connectionString);
+const sequelize = new Sequelize(connectionString, {
+  logging: false
+});
 
 // モデルを定義する
 const Entry = sequelize.define('entries', {
@@ -74,15 +79,15 @@ const Entry = sequelize.define('entries', {
 Entry.sync();
 
 // SELECT (確認用)
-Entry.findAll()
-  .then((result) => {
-    console.log('全件', result.length);
-  });
+// Entry.findAll()
+//   .then((result) => {
+//     console.log('全件', result.length);
+//   });
 
 // INSERT
 Entry.bulkCreate(entries)
   .then((result) => {
-    console.log('Bulk Create 成功', result);
+    console.log('Bulk Create 成功');
   })
   .catch((error) => {
     console.log('Bulk Create 失敗', error);

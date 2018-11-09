@@ -27,6 +27,8 @@ export class LogoutService {
     console.log('ログアウト通信 : 開始・LocalStorage からログインユーザ情報を削除する');
     localStorage.removeItem(appConstants.localStorage.userInfoKey);
     
+    // TODO : 各サービスでキャッシュしているデータも消しておく必要がある
+    
     return this.httpClient.get(`${environment.serverUrl}/logout`).toPromise()
       .then((result) => {
         console.log('ログアウト通信 : 成功', result);

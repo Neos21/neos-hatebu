@@ -69,7 +69,7 @@ export class CategoriesService {
         return category;
       })
       .catch((error) => {
-        console.log('カテゴリごとのエントリ取得 : 失敗', error);
+        console.error('カテゴリごとのエントリ取得 : 失敗', error);
         return Promise.reject(error);
       });
   }

@@ -14,9 +14,12 @@ console.log('接続開始', connectionString);
 const sequelize = new Sequelize(connectionString);
 
 // 各モデルを定義・格納する
-Model.User     = require('./user-model')(sequelize);
-Model.Category = require('./category-model')(sequelize);
-Model.Entry    = require('./entry-model')(sequelize);
+Model.User     = require('./user-model'     )(sequelize);
+Model.Category = require('./category-model' )(sequelize);
+Model.Entry    = require('./entry-model'    )(sequelize);
+Model.NgUrl    = require('./ng-url-model'   )(sequelize);
+Model.NgWord   = require('./ng-word-model'  )(sequelize);
+Model.NgDomain = require('./ng-domain-model')(sequelize);
 
 // 各モデルが associate() 関数を定義していれば実行し、関係を定義する
 Object.keys(Model).forEach((key) => {

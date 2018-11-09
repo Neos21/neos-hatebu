@@ -16,9 +16,9 @@ module.exports = {
         ['id', 'ASC']
       ]
     })
-      .then((result) => {
+      .then((results) => {
         res.status(200);  // OK
-        res.json(result);
+        res.json(results);
       })
       .catch((error) => {
         res.status(404);  // Not Found

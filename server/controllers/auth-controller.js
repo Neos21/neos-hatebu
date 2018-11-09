@@ -9,13 +9,14 @@ module.exports = {
    * @param res レスポンス
    */
   login: (req, res) => {
-    const userId = req.user;
-    console.log('Login', userId);
+    const userInfo = req.user;
+    console.log('Login', userInfo);
     
     // Angular の HttpClient がエラー扱いにしないよう JSON を返す
     res.json({
-      result: 'Login',
-      userId: userId
+      result  : 'Login',
+      id      : userInfo.id,
+      userName: userInfo.userName
     });
   },
   
@@ -26,13 +27,14 @@ module.exports = {
    * @param res レスポンス
    */
   logout: (req, res) => {
-    const userId = req.user;
-    console.log('Logout', userId);
+    const userInfo = req.user;
+    console.log('Logout', userInfo);
     
     req.logout();
     res.json({
-      result: 'Logout',
-      userId: userId
+      result  : 'Logout',
+      id      : userInfo.id,
+      userName: userInfo.userName
     });
   }
 };

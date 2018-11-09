@@ -1,6 +1,6 @@
 <h1>Neo's Hatebu トップ</h1>
 
-<p><button type="button" (click)="onLogout()">ログアウト</button></p>
+<div><button type="button" (click)="onLogout()">ログアウト</button></div>
 
 <div class="main">
   
@@ -14,14 +14,15 @@
   <div class="contents">
     <ng-container *ngIf="currentCategory">
       <h2>{{ currentCategory.name }} ({{ currentCategory.updatedAt }})</h2>
-      <dl *ngIf="currentCategory.entries && currentCategory.entries.length">
-        <ng-container *ngFor="let entry of currentCategory.entries">
-          <dt><a [href]="entry.url" target="_blank">{{ entry.title }}</a> [{{ entry.count }} Users] [{{ entry.date }}]</dt>
-          <dd>
-            <p>{{ entry.description }}</p>
-          </dd>
-        </ng-container>
-      </dl>
+      <ol *ngIf="currentCategory.entries && currentCategory.entries.length">
+        <li *ngFor="let entry of currentCategory.entries">
+          <div>
+            <strong><a [href]="entry.url" target="_blank">{{ entry.title }}</a> [{{ entry.count }} Users] [{{ entry.date }}]</strong>
+            <button type="button" (click)="onDeleteEntry(entry)">削除する</button>
+          </div>
+          <p>{{ entry.description }}</p>
+        </li>
+      </ol>
     </ng-container>
   </div>
   

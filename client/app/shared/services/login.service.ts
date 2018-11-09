@@ -24,12 +24,12 @@ export class LoginService {
   /**
    * ログインする
    * 
-   * @param userId ユーザ ID
+   * @param userName ユーザ名
    * @param inputPassword パスワード
    * @param isHashPassword 第2引数 inputPassword がハッシュ文字列かどうか (true なら関数内でハッシュ化しない・false か未指定ならハッシュ化する)
    * @return Promise
    */
-  public login(userId: string, inputPassword: string, isHashPassword?: boolean): Promise<any> {
+  public login(userName: string, inputPassword: string, isHashPassword?: boolean): Promise<any> {
     let password = inputPassword;
     if(!isHashPassword) {
       password = md5(inputPassword);
@@ -37,13 +37,18 @@ export class LoginService {
     }
     
     console.log('ログイン通信 : 開始');
-    return this.httpClient.post(`${environment.serverUrl}/login`, { userId, password }).toPromise()
-      .then((result) => {
+    return this.httpClient.post(`${environment.serverUrl}/login`, { userName, password }).toPromise()
+      .then((result: { result: string; id: string|number; userName: string }) => {
         console.log('ログイン通信 : 成功・ローカル DB にログイン情報を保存', result);
-        localStorage.setItem(appConstants.localStorage.userInfoKey, JSON.stringify({ userId, password }));
+        const localStorageUserInfo = {
+          id      : result.id,
+          userName: result.userName,
+          password: password
+        };
+        localStorage.setItem(appConstants.localStorage.userInfoKey, JSON.stringify(localStorageUserInfo));
       })
       .catch((error) => {
-        console.error('ログイン通信 : 失敗', { userId, inputPassword, password }, error);
+        console.error('ログイン通信 : 失敗', { userName, inputPassword, password }, error);
         return Promise.reject(error);
       });
   }
@@ -62,7 +67,7 @@ export class LoginService {
     
     console.log('LocalStorage にログインユーザ情報あり・再ログイン開始');
     const userInfo = JSON.parse(rawUserInfo);
-    return this.login(userInfo.userId, userInfo.password, true)
+    return this.login(userInfo.userName, userInfo.password, true)
       .catch((error) => {
         // 通信エラー時のみ「自動再ログイン失敗」のメッセージを表示する
         sessionStorage.setItem(appConstants.sessionStorage.loginInitMessageKey, `自動再ログイン失敗 : ${JSON.stringify(error)}`);
