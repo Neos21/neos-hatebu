@@ -1,0 +1,17 @@
+<h1>NG ワード設定</h1>
+
+<p><a [routerLink]="['/home']">戻る</a></p>
+
+<p>
+  <input type="text" [(ngModel)]="newNgWord" placeholder="NG ワードを追加">
+  <button type="button" (click)="onAddNgWord()" [disabled]="newNgWord === null || newNgWord === undefined || newNgWord === ''">追加</button>
+</p>
+
+<ol *ngIf="ngWords && ngWords.length">
+  <li *ngFor="let ngWord of ngWords">
+    <button type="button" (click)="onRemoveNgWord(ngWord.id)">削除</button>
+    {{ ngWord.word }}
+  </li>
+</ol>
+
+<p *ngIf="!ngWords || !ngWords.length">NG ワードは登録されていません。</p>

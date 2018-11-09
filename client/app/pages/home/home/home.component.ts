@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 import { LogoutService } from '../../../shared/services/logout.service';
 import { CategoriesService } from '../../../shared/services/categories.service';
 import { Category } from '../../../shared/classes/category';
 import { NgDataService } from '../../../shared/services/ng-data.service';
-import { Entry } from '../../../shared/classes/entry';
 
 /**
  * Home Component : 「ホーム」画面
@@ -23,13 +21,18 @@ export class HomeComponent implements OnInit {
   /** 表示中のカテゴリのデータ */
   public currentCategory: Category = null;
   
-  // TODO : コメント
+  /**
+   * 
+   * @param router 
+   * @param categoriesService 
+   * @param ngDataService 
+   * @param logoutService 
+   */
   constructor(
     private router: Router,
     private categoriesService: CategoriesService,
     private ngDataService: NgDataService,
-    private logoutService: LogoutService,
-    private httpClient: HttpClient
+    private logoutService: LogoutService
   ) { }
   
   /**
@@ -64,7 +67,7 @@ export class HomeComponent implements OnInit {
     this.categoriesService.findById(categoryId)
       .then((category) => {
         // NG 情報を参照して除外していく : filter() をチェーンしたりできるが、デバッグしやすくするため分割しておく
-        console.log('フィルタ前', category.entries.length, category.entries);
+        // console.log('フィルタ前', category.entries.length, category.entries);
         
         const urlFilteredEntries = category.entries.filter((entry) => {
           // 記事 URL が NG URL に合致する記事を省く
@@ -72,7 +75,7 @@ export class HomeComponent implements OnInit {
             return entry.url === ngUrl.url;
           });
         });
-        console.log('URL フィルタ後', urlFilteredEntries.length, urlFilteredEntries);
+        // console.log('URL フィルタ後', urlFilteredEntries.length, urlFilteredEntries);
         
         const wordFilteredEntries = urlFilteredEntries.filter((entry) => {
           // NG ワードをタイトルに含む記事を省く
@@ -80,7 +83,7 @@ export class HomeComponent implements OnInit {
             return entry.title.includes(ngWord.word);
           });
         });
-        console.log('ワードフィルタ後', wordFilteredEntries.length, wordFilteredEntries);
+        // console.log('ワードフィルタ後', wordFilteredEntries.length, wordFilteredEntries);
         
         const domainFilteredEntries = wordFilteredEntries.filter((entry) => {
           // NG ドメインを URL に含む記事を省く
@@ -88,25 +91,28 @@ export class HomeComponent implements OnInit {
             return entry.url.includes(ngDomain.domain);
           });
         });
-        console.log('ドメインフィルタ後', domainFilteredEntries.length, domainFilteredEntries);
+        // console.log('ドメインフィルタ後', domainFilteredEntries.length, domainFilteredEntries);
         
         // 画面に設定する
         category.entries = domainFilteredEntries;
         this.currentCategory = category;
       })
       .catch((error) => {
-        // 指定のカテゴリのエントリ取得に失敗
-        console.error(error);
+        console.error('指定のカテゴリのエントリ取得に失敗', error);
       });
   }
   
   /**
    * 選択した記事を NG URL に追加して削除する
    * 
-   * @param entry 削除する記事
+   * @param url 削除する記事の URL
    */
-  public onDeleteEntry(entry: Entry): void {
-    // TODO
+  public onRemoveEntry(url: string): void {
+    this.ngDataService.addNgUrl(url)
+      .then(() => {
+        console.log('記事削除処理完了・再表示することでフィルタする');
+        this.onShowCategory(this.currentCategory.id);
+      });
   }
   
   /**

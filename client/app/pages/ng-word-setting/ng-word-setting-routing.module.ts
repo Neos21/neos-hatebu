@@ -3,17 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../../shared/guards/auth.guard';
 
-import { HomeComponent } from './home/home.component';
+import { NgWordSettingComponent } from './ng-word-setting/ng-word-setting.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }
+  { path: 'ng-word-setting', component: NgWordSettingComponent, canActivate: [AuthGuard] }
 ];
 
 /**
- * Home Routing
+ * NG Word Setting Routing
  */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class NgWordSettingRoutingModule { }

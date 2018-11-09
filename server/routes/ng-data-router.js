@@ -14,8 +14,4 @@ router.get('/', isAuthenticated, (req, res) => {
   ngDataController.findAll(req, res);
 });
 
-// TODO : NG URL の追加
-// TODO : NG ワードの追加・削除 (一括変更したいので PUT で処理するかも？)
-// TODO : NG ドメインの追加・削除 (一括変更したいので PUT で処理するかも？)
-
 module.exports = router;

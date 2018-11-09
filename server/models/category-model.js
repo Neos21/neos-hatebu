@@ -8,7 +8,7 @@ const Sequelize = require('sequelize');
  */
 module.exports = (sequelize) => {
   const Category = sequelize.define('categories', {
-    id       : { field: 'id'        , type: Sequelize.INTEGER, primaryKey: true },  // カテゴリ ID
+    id       : { field: 'id'        , type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },  // カテゴリ ID
     name     : { field: 'name'      , type: Sequelize.TEXT, allowNull: false },  // カテゴリ名
     rssUrl   : { field: 'rss_url'   , type: Sequelize.TEXT, allowNull: false },  // RSS URL (RSS からのパース用)
     pageUrl  : { field: 'page_url'  , type: Sequelize.TEXT, allowNull: false },  // ページ URL (Web ページからのスクレイピング用)

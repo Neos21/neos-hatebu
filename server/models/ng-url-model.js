@@ -7,8 +7,8 @@ const Sequelize = require('sequelize');
  * @return テーブルのモデル
  */
 module.exports = (sequelize) => {
-  // ID カラムは勝手に生成される様子
   const NgUrl = sequelize.define('ng_urls', {
+    id       : { field: 'id'        , type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },  // ID (勝手に生成されるようなので用途はないが作っておく)
     userId   : { field: 'user_id'   , type: Sequelize.INTEGER, allowNull: false },  // ユーザ ID (users.id)
     url      : { field: 'url'       , type: Sequelize.TEXT   , allowNull: false },  // NG URL (イメージ的にはユーザ ID との複合ユニークだが UPSERT で対処する)
     createdAt: { field: 'created_at', type: Sequelize.DATE   , allowNull: false }   // 登録日 (一定期間後に削除するため)

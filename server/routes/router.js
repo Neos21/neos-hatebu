@@ -16,20 +16,8 @@ router.use((req, _res, next) => {
 router.use('/'          , require('./angular-app-router'));  // ルートで Angular アプリを提供する
 router.use('/'          , require('./auth-router'       ));  // ログイン・ログアウト
 router.use('/categories', require('./categories-router' ));  // カテゴリ
-router.use('/ng-data'   , require('./ng-data-router'    ));  // NG 情報
-
-
-
-// ----------------------------------------------------------------------------------------------------
-
-// TODO : 以降作っていく…
-router.get('/member-only', isAuthenticated, (req, res) => {
-  console.log('メンバオンリー', { userInfo: req.user, content: `Member Only!` })
-  res.json({ userInfo: req.user, content: `Member Only!` });
-});
-
-// ----------------------------------------------------------------------------------------------------
-
-
+router.use('/ng-data'   , require('./ng-data-router'    ));  // NG 情報 (一括返却)
+router.use('/ng-urls'   , require('./ng-urls-router'    ));  // NG URL
+router.use('/ng-words'  , require('./ng-words-router'   ));  // NG ワード
 
 module.exports = router;

@@ -25,7 +25,7 @@ module.exports = () => {
     })
       .then((result) => {
         if(result && result.dataValues) {
-          console.log('認証処理 : 成功', userName, result.datavalues);
+          console.log('認証処理 : 成功', userName, result.dataValues);
           const userInfo = {
             id: result.dataValues.id,
             userName: result.dataValues.userName

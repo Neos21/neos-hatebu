@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { LoginModule } from './login/login.module';
 import { HomeModule } from './home/home.module';
+import { NgWordSettingModule } from './ng-word-setting/ng-word-setting.module';
 
 /**
  * Pages Module
@@ -12,7 +13,8 @@ import { HomeModule } from './home/home.module';
   imports: [
     SharedModule,
     LoginModule,
-    HomeModule
+    HomeModule,
+    NgWordSettingModule
   ]
 })
 export class PagesModule { }

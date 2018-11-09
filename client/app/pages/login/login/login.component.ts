@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { LoginService } from '../../../shared/services/login.service';
 import { appConstants } from '../../../shared/constants/app-constants';
+import { AuthGuard } from '../../../shared/guards/auth.guard';
 
 /**
  * Login Component : ログイン画面
@@ -25,11 +26,13 @@ export class LoginComponent implements OnInit {
    * @param formBuilder FormBuilder
    * @param router Router
    * @param loginService LoginService
+   * @param authGuard AuthGuard
    */
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private authGuard: AuthGuard
   ) { }
   
   /**
@@ -44,6 +47,9 @@ export class LoginComponent implements OnInit {
     
     // ログイン画面に遷移した時はログインユーザ情報を削除しておく
     localStorage.removeItem(appConstants.localStorage.userInfoKey);
+    
+    // ログイン処理未済の状態としてガードを設定しておく
+    this.authGuard.isLogined = false;
     
     // 初期表示時に表示するフィードバックメッセージがあれば表示する
     const initMessage = sessionStorage.getItem(appConstants.sessionStorage.loginInitMessageKey);
@@ -60,6 +66,8 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.loginForm.value.userName, this.loginForm.value.password)
       .then(() => {
         console.log('ログイン成功');
+        // 二重にログイン処理がされないようガードを設定しておく (LoginService 内でやろうとすると AuthGuard と循環依存するためココで行う)
+        this.authGuard.isLogined = true;
         this.router.navigate(['/home']);
       })
       .catch((error) => {

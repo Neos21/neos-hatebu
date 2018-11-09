@@ -7,8 +7,6 @@ module.exports = {
   /**
    * NG URL・NG ワード・NG ドメインをまとめて返す
    * 
-   * TODO : NG ワード・NG ドメイン作ったらマージする
-   * 
    * @param req リクエスト
    * @param res レスポンス
    */
@@ -22,6 +20,7 @@ module.exports = {
       ngDomains: []
     }
     
+    // NG URL の取得
     Model.NgUrl.findAll({
       where: {
         userId: userId
@@ -30,6 +29,7 @@ module.exports = {
       .then((results) => {
         returnObj.ngUrls = results;
         
+        // NG ワードの取得
         return Model.NgWord.findAll({
           where: {
             userId: userId
@@ -39,6 +39,7 @@ module.exports = {
       .then((results) => {
         returnObj.ngWords = results;
         
+        // NG ドメインの取得
         return Model.NgDomain.findAll({
           where: {
             userId: userId
@@ -55,9 +56,5 @@ module.exports = {
         res.status(404);  // Not Found
         res.json(error);
       });
-  },
-  
-  // TODO : NG URL の追加
-  // TODO : NG ワードの追加・削除
-  // TODO : NG ドメインの追加・削除
+  }
 };

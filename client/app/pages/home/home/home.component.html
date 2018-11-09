@@ -9,6 +9,12 @@
     <ul *ngIf="categories && categories.length">
       <li *ngFor="let category of categories"><a [routerLink]="[]" (click)="onShowCategory(category.id)">{{ category.name }}</a></li>
     </ul>
+    
+    <h2>設定</h2>
+    <ul>
+      <li><a [routerLink]="['/ng-word-setting']">NG ワード設定</a></li>
+      <li>NG ドメイン設定</li>
+    </ul>
   </div>
   
   <div class="contents">
@@ -16,13 +22,12 @@
       <h2>{{ currentCategory.name }} ({{ currentCategory.updatedAt }})</h2>
       <ol *ngIf="currentCategory.entries && currentCategory.entries.length">
         <li *ngFor="let entry of currentCategory.entries">
-          <div>
-            <strong><a [href]="entry.url" target="_blank">{{ entry.title }}</a> [{{ entry.count }} Users] [{{ entry.date }}]</strong>
-            <button type="button" (click)="onDeleteEntry(entry)">削除する</button>
-          </div>
+          <div><button type="button" (click)="onRemoveEntry(entry.url)">削除する</button> [{{ entry.count }} Users] [{{ entry.date }}]</div>
+          <div><strong><a [href]="entry.url" target="_blank">{{ entry.title }}</a></strong></div>
           <p>{{ entry.description }}</p>
         </li>
       </ol>
+      <p *ngIf="!currentCategory.entries || !currentCategory.entries.length">表示できるエントリはありません。</p>
     </ng-container>
   </div>
   
