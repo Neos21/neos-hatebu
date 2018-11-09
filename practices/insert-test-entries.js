@@ -43,7 +43,7 @@ htmls.forEach(($, categoryIndex) => {
     const description = $(element).find('.entrylist-contents-description').text();
     // Favicon URL
     const faviconUrl = $(element).find('.entrylist-contents-domain img').attr('src');
-    // サムネイル : サムネイルがない記事は span 要素がなく、最終的な文字列が 'undefined' になる
+    // サムネイル : サムネイルがない記事は span 要素がなく、最終的な文字列が 'undefined' になるので空文字に修正
     let thumbnailUrl = `${$(element).find('.entrylist-contents-thumb span').attr('style')}`.replace('background-image:url(\'', '').replace('\');', '');
     if(thumbnailUrl === 'undefined') { thumbnailUrl = ''; }
     

@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
           });
         });
         console.log('ドメインフィルタ後', domainFilteredEntries.length, domainFilteredEntries);
-          
+        
         // 画面に設定する
         category.entries = domainFilteredEntries;
         this.currentCategory = category;
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit {
    * @param entry 削除する記事
    */
   public onDeleteEntry(entry: Entry): void {
-    
+    // TODO
   }
   
   /**
