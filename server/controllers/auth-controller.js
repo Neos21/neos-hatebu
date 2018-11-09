@@ -10,7 +10,6 @@ module.exports = {
    */
   login: (req, res) => {
     const userInfo = req.user;
-    console.log('Login', userInfo);
     
     // Angular の HttpClient がエラー扱いにしないよう JSON を返す
     res.json({
@@ -28,7 +27,6 @@ module.exports = {
    */
   logout: (req, res) => {
     const userInfo = req.user;
-    console.log('Logout', userInfo);
     
     req.logout();
     res.json({

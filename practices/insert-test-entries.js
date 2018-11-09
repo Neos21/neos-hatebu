@@ -76,7 +76,7 @@ const Entry = sequelize.define('entries', {
 }, {
   createdAt: false
 });
-Entry.sync();
+// Entry.sync();
 
 // SELECT (確認用)
 // Entry.findAll()

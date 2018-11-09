@@ -35,19 +35,18 @@ export class AuthGuard implements CanActivate {
    */
   public canActivate(_next: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if(this.isLogined) {
-      console.log('自動再ログイン試行 : ログイン済・セッション設定ができているようなので遷移許可');
+      // ログイン済・セッション設定ができているようなので遷移を許可する
       return true;
     }
     
-    console.log('自動再ログイン試行 : 開始');
     return this.loginService.autoReLogin()
       .then(() => {
-        console.log('自動再ログイン試行 : 成功・対象の画面に遷移する');
+        // 認証成功・対象の画面への繊維を許可する
         this.isLogined = true;
         return Promise.resolve(true);
       })
-      .catch((_error) => {
-        console.log('自動再ログイン試行 : 失敗・ログイン画面にリダイレクトする');
+      .catch((error) => {
+        console.warn('自動再ログイン試行 : 失敗・ログイン画面にリダイレクトする', error);
         this.isLogined = false;
         this.router.navigate(['/login']);
         return Promise.resolve(false);

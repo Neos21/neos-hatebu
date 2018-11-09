@@ -1,11 +1,11 @@
 const Model = require('../models/model');
 
 /**
- * NG Words Controller
+ * NG Domains Controller
  */
 module.exports = {
   /**
-   * NG ワードを返す
+   * NG ドメインを返す
    * 
    * @param req リクエスト
    * @param res レスポンス
@@ -13,7 +13,7 @@ module.exports = {
   findAll: (req, res) => {
     const userId = req.user.id;
     
-    Model.NgWord.findAll({
+    Model.NgDomain.findAll({
       where: {
         userId: userId
       }
@@ -29,18 +29,18 @@ module.exports = {
   },
   
   /**
-   * NG ワードを追加 (更新) する
+   * NG ドメインを追加 (更新) する
    * 
    * @param req リクエスト
    * @param res レスポンス
    */
   upsert: (req, res) => {
     const userId = req.user.id;
-    const ngWord = req.body.ngWord;
+    const ngDomain = req.body.ngDomain;
     
-    Model.NgWord.upsert({
+    Model.NgDomain.upsert({
       userId: userId,
-      word: ngWord
+      domain: ngDomain
     }, {
       returning: true  // 登録した情報を返す
     })
@@ -55,18 +55,18 @@ module.exports = {
   },
   
   /**
-   * ID を指定して NG ワードを削除する
+   * ID を指定して NG ドメインを削除する
    * 
    * @param req リクエスト
    * @param res レスポンス
    */
   remove: (req, res) => {
     const userId = req.user.id;
-    const ngWordId = req.params.id;
+    const ngDomainId = req.params.id;
     
-    Model.NgWord.destroy({
+    Model.NgDomain.destroy({
       where: {
-        id: ngWordId,
+        id: ngDomainId,
         userId: userId
       }
     })

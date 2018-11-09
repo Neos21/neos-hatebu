@@ -19,5 +19,6 @@ router.use('/categories', require('./categories-router' ));  // カテゴリ
 router.use('/ng-data'   , require('./ng-data-router'    ));  // NG 情報 (一括返却)
 router.use('/ng-urls'   , require('./ng-urls-router'    ));  // NG URL
 router.use('/ng-words'  , require('./ng-words-router'   ));  // NG ワード
+router.use('/ng-domains', require('./ng-domains-router' ));  // NG ドメイン
 
 module.exports = router;

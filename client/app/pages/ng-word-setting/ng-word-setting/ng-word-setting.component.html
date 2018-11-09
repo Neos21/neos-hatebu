@@ -2,10 +2,12 @@
 
 <p><a [routerLink]="['/home']">戻る</a></p>
 
-<p>
-  <input type="text" [(ngModel)]="newNgWord" placeholder="NG ワードを追加">
-  <button type="button" (click)="onAddNgWord()" [disabled]="newNgWord === null || newNgWord === undefined || newNgWord === ''">追加</button>
-</p>
+<form [formGroup]="newForm">
+  <input type="text" formControlName="word" placeholder="NG ワードを追加">
+  <button type="button" (click)="onAddNgWord()" [disabled]="newForm.invalid">追加</button>
+</form>
+
+<p *ngIf="message">{{ message }}</p>
 
 <ol *ngIf="ngWords && ngWords.length">
   <li *ngFor="let ngWord of ngWords">

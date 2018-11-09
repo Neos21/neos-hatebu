@@ -32,14 +32,13 @@ export class LoginService {
   public login(userName: string, inputPassword: string, isHashPassword?: boolean): Promise<any> {
     let password = inputPassword;
     if(!isHashPassword) {
+      // パスワードをハッシュ化する
       password = md5(inputPassword);
-      console.log('パスワード文字列をハッシュ化', password);
     }
     
-    console.log('ログイン通信 : 開始');
     return this.httpClient.post(`${environment.serverUrl}/login`, { userName, password }).toPromise()
       .then((result: { result: string; id: string|number; userName: string }) => {
-        console.log('ログイン通信 : 成功・ローカル DB にログイン情報を保存', result);
+        // 成功・LocalStorage にログイン情報を保存する
         const localStorageUserInfo = {
           id      : result.id,
           userName: result.userName,
@@ -61,11 +60,10 @@ export class LoginService {
   public autoReLogin(): Promise<any> {
     const rawUserInfo = localStorage.getItem(appConstants.localStorage.userInfoKey);
     if(!rawUserInfo) {
-      console.log('LocalStorage にログインユーザ情報なし');
       return Promise.reject('LocalStorage にログインユーザ情報なし');
     }
     
-    console.log('LocalStorage にログインユーザ情報あり・再ログイン開始');
+    // LocalStorage にログインユーザ情報あり・再ログイン開始
     const userInfo = JSON.parse(rawUserInfo);
     return this.login(userInfo.userName, userInfo.password, true)
       .catch((error) => {

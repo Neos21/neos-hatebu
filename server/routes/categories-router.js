@@ -18,4 +18,9 @@ router.get('/:id', isAuthenticated, (req, res) => {
   categoriesController.findById(req, res);
 })
 
+// 指定のカテゴリ ID のエントリ一覧を再スクレイピングする
+router.get('/:id/reload', isAuthenticated, (req, res) => {
+  categoriesController.reloadById(req, res);
+})
+
 module.exports = router;

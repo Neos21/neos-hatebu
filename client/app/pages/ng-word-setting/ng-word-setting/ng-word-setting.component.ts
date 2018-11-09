@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 import { NgDataService } from '../../../shared/services/ng-data.service';
 import { NgWord } from '../../../shared/classes/ng-word';
 
@@ -11,17 +13,33 @@ import { NgWord } from '../../../shared/classes/ng-word';
   styleUrls: ['./ng-word-setting.component.scss']
 })
 export class NgWordSettingComponent implements OnInit {
-  /** 追加したい NG ワード入力欄 */
-  public newNgWord: string = '';
+  /** 追加欄 */
+  public newForm: FormGroup;
   /** NG ワード一覧 */
   public ngWords: NgWord[] = [];
+  /** フィードバックメッセージ */
+  public message: string = '';
   
-  constructor(private ngDataService: NgDataService) { }
-
+  /**
+   * コンストラクタ
+   * 
+   * @param formBuilder Formbuilder
+   * @param ngDataService NgDataService
+   */
+  constructor(
+    private formBuilder: FormBuilder,
+    private ngDataService: NgDataService
+  ) { }
+  
   /**
    * 画面初期表示時の処理
    */
   public ngOnInit(): void {
+    // フォームを生成する
+    this.newForm = this.formBuilder.group({
+      word: ['', [Validators.required]]
+    });
+    
     // NG ワード一覧をキャッシュから取得する
     this.ngDataService.findNgWords()
       .then((ngWords) => {
@@ -33,15 +51,24 @@ export class NgWordSettingComponent implements OnInit {
    * NG ワードを追加する
    */
   public onAddNgWord(): void {
-    this.ngDataService.addNgWord(this.newNgWord)
-      .then((createdNgWord) => {
-        console.log(createdNgWord);
-        // 登録した NG ワードが返されるのでキャッシュと画面表示している一覧に追加する (参照渡しで this.ngWords の方も変更が入る)
-        this.ngDataService.ngWords.push(createdNgWord);
+    const newWord = this.newForm.value.word;
+    
+    if(this.ngWords.some((ngWord) => {
+      return ngWord.word === newWord;
+    })) {
+      this.message = `${newWord} は登録済です。`;
+      this.newForm.reset();
+      return;
+    }
+    
+    // サービス内で ngWords の要素を追加している・参照渡しで利用している画面側では操作不要
+    this.ngDataService.addNgWord(newWord)
+      .then(() => {
+        this.newForm.reset();
       })
       .catch((error) => {
         console.error('NG ワード追加に失敗', error);
-        // TODO : エラー時にメッセージでも表示するか…
+        this.message = `NG ワード追加に失敗 : ${JSON.stringify(error)}`;
       });
   }
   
@@ -51,16 +78,11 @@ export class NgWordSettingComponent implements OnInit {
    * @param ngWordId 削除する NG ワードの ID
    */
   public onRemoveNgWord(ngWordId: string|number): void {
+    // サービス内で ngWords の要素を削除している・参照渡しで利用している画面側では操作不要
     this.ngDataService.removeNgWord(ngWordId)
-      .then(() => {
-        // キャッシュと画面表示している一覧から、対象の NG ワードを削除する
-        this.ngDataService.ngWords = this.ngWords = this.ngWords.filter((ngWord) => {
-          return ngWord.id !== ngWordId;
-        });
-      })
       .catch((error) => {
         console.error('NG ワード削除に失敗', error);
-        // TODO : エラー時にメッセージでも表示するか…
+        this.message = `NG ワード削除に失敗 : ${JSON.stringify(error)}`;
       });
   }
 }

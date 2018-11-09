@@ -10,8 +10,10 @@ const Model = {};
 
 // DB 接続する
 const connectionString = process.env.DATABASE_URL;
-console.log('接続開始', connectionString);
-const sequelize = new Sequelize(connectionString);
+const sequelize = new Sequelize(connectionString, {
+  timezone: '+09:00',  // JST タイムゾーン : Sequelize で SELECT すると全て UTC の ISO 形式になっており DB 上の記録と異なる
+  logging: false  // ログ出力
+});
 
 // 各モデルを定義・格納する
 Model.User     = require('./user-model'     )(sequelize);
@@ -25,7 +27,6 @@ Model.NgDomain = require('./ng-domain-model')(sequelize);
 Object.keys(Model).forEach((key) => {
   const model = Model[key];
   if(model.associate) {
-    console.log('関係定義実行', key);
     model.associate(Model);
   }
 });

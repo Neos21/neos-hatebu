@@ -65,13 +65,12 @@ export class LoginComponent implements OnInit {
   public onSubmit(): void {
     this.loginService.login(this.loginForm.value.userName, this.loginForm.value.password)
       .then(() => {
-        console.log('ログイン成功');
-        // 二重にログイン処理がされないようガードを設定しておく (LoginService 内でやろうとすると AuthGuard と循環依存するためココで行う)
+        // 成功・二重にログイン処理がされないようガードを設定しておく (LoginService 内でやろうとすると AuthGuard と循環依存するためココで行う)
         this.authGuard.isLogined = true;
         this.router.navigate(['/home']);
       })
       .catch((error) => {
-        console.log('ログイン失敗', error);
+        console.warn('ログイン失敗', error);
         this.message = `ログイン失敗 : ${JSON.stringify(error)}`;
       });
   }

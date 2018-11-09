@@ -36,7 +36,7 @@ export class LogoutService {
    * @return Promise
    */
   public logout(): Promise<any> {
-    console.log('ログアウト通信 : 開始・LocalStorage など削除し通信する');
+    // LocalStorage を削除・認証するようにガードを設定する
     localStorage.removeItem(appConstants.localStorage.userInfoKey);
     this.authGuard.isLogined = false;
     
@@ -47,12 +47,9 @@ export class LogoutService {
     this.ngDataService.ngDomains = [];
     
     return this.httpClient.get(`${environment.serverUrl}/logout`).toPromise()
-      .then((result) => {
-        console.log('ログアウト通信 : 成功', result);
-      })
       .catch((error) => {
         // 通信エラーでも無視する
-        console.error('ログアウト通信 : 失敗', error);
+        console.warn('ログアウト通信 : 失敗', error);
       });
   }
 }

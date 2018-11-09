@@ -28,20 +28,19 @@ export class CategoriesService {
    * @return カテゴリ一覧
    */
   public findAll(): Promise<Category[]> {
+    // キャッシュがあればキャッシュを返す
     if(this.categories.length) {
-      console.log('カテゴリ一覧取得 : キャッシュを返却');
       return Promise.resolve(this.categories);
     }
     
-    console.log('カテゴリ一覧取得 : 開始');
     return this.httpClient.get(`${environment.serverUrl}/categories`).toPromise()
       .then((categories: Category[]) => {
-        console.log('カテゴリ一覧取得 : 成功・キャッシュする', categories);
+        // 取得成功・キャッシュする
         this.categories = categories;
         return categories;
       })
       .catch((error) => {
-        console.log('カテゴリ一覧取得 : 失敗', error);
+        console.error('カテゴリ一覧取得 : 失敗', error);
         return Promise.reject(error);
       });
   }
@@ -56,20 +55,45 @@ export class CategoriesService {
     const targetCategory = this.categories.find((category) => {
       return category.id === id;
     });
+    
+    // キャッシュがあればキャッシュを返す
     if(targetCategory && targetCategory.entries && targetCategory.entries.length) {
-      console.log('カテゴリごとのエントリ取得 : キャッシュを返却');
       return Promise.resolve(targetCategory);
     }
     
-    console.log('カテゴリごとのエントリ取得 : 開始');
     return this.httpClient.get(`${environment.serverUrl}/categories/${id}`).toPromise()
       .then((category: Category) => {
-        console.log('カテゴリごとのエントリ取得 : 成功・キャッシュする', category);
+        // 取得成功・キャッシュする
         targetCategory.entries = category.entries;
         return category;
       })
       .catch((error) => {
         console.error('カテゴリごとのエントリ取得 : 失敗', error);
+        return Promise.reject(error);
+      });
+  }
+  
+  /**
+   * 指定のカテゴリ ID のエントリ一覧を再スクレイピングして取得する
+   * 
+   * @param id カテゴリ ID
+   * @return 指定のカテゴリ情報と再スクレイピングしたエントリ一覧
+   */
+  public reloadById(id: string|number): Promise<any> {
+    // 再スクレイピング対象のカテゴリ
+    const targetCategory = this.categories.find((category) => {
+      return category.id === id;
+    });
+    
+    return this.httpClient.get(`${environment.serverUrl}/categories/${id}/reload`).toPromise()
+      .then((category: Category) => {
+        // 取得成功・キャッシュする
+        targetCategory.updatedAt = category.updatedAt;  // 最終クロール日時も更新する
+        targetCategory.entries = category.entries;
+        return category;
+      })
+      .catch((error) => {
+        console.error('再スクレイピング : 失敗', error);
         return Promise.reject(error);
       });
   }
