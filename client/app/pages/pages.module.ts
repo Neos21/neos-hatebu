@@ -5,6 +5,9 @@ import { SharedModule } from '../shared/shared.module';
 import { LoginModule } from './login/login.module';
 import { HomeModule } from './home/home.module';
 
+/**
+ * Pages Module
+ */
 @NgModule({
   imports: [
     SharedModule,

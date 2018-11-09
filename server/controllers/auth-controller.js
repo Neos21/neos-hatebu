@@ -1,6 +1,13 @@
-/** Auth */
+/**
+ * Auth Controller
+ */
 module.exports = {
-  /** ログイン */
+  /**
+   * ログイン
+   * 
+   * @param req リクエスト
+   * @param res レスポンス
+   */
   login: (req, res) => {
     const userId = req.user;
     console.log('Login', userId);
@@ -12,7 +19,12 @@ module.exports = {
     });
   },
   
-  /** ログアウト */
+  /**
+   * ログアウト
+   * 
+   * @param req リクエスト
+   * @param res レスポンス
+   */
   logout: (req, res) => {
     const userId = req.user;
     console.log('Logout', userId);

@@ -7,7 +7,6 @@ const Sequelize = require('sequelize');
  * @return テーブルのモデル
  */
 module.exports = (sequelize) => {
-  // モデルを定義する
   const Category = sequelize.define('categories', {
     id       : { field: 'id'        , type: Sequelize.INTEGER, primaryKey: true },  // カテゴリ ID
     name     : { field: 'name'      , type: Sequelize.TEXT, allowNull: false },  // カテゴリ名
@@ -25,7 +24,6 @@ module.exports = (sequelize) => {
     });
   }
   
-  // テーブルがなければ作成し DB と同期する
   Category.sync();
   
   return Category;

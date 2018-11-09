@@ -3,7 +3,9 @@ const express = require('express');
 const isAuthenticated = require('./func-is-authenticated');
 const categoriesController = require('../controllers/categories-controller');
 
-/** カテゴリ情報のルーティング */
+/**
+ * カテゴリ情報のルーティング
+ */
 const router = express.Router();
 
 // カテゴリのみ全件取得

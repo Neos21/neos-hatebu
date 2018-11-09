@@ -7,9 +7,8 @@ const Sequelize = require('sequelize');
  * @return テーブルのモデル
  */
 module.exports = (sequelize) => {
-  // モデルを定義する
   const Entry = sequelize.define('entries', {
-    id          : { field: 'id'           , type: Sequelize.INTEGER, primaryKey: true },  // エントリ ID
+    id          : { field: 'id'           , type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },  // エントリ ID
     categoryId  : { field: 'category_id'  , type: Sequelize.INTEGER, allowNull: false },  // 紐付く category.id
     title       : { field: 'title'        , type: Sequelize.TEXT   , allowNull: false },  // 記事タイトル
     url         : { field: 'url'          , type: Sequelize.TEXT   , allowNull: false },  // 記事 URL
@@ -27,11 +26,10 @@ module.exports = (sequelize) => {
   Entry.associate = (Model) => {
     Entry.belongsTo(Model.Category, {
       foreignKey: 'categoryId', // Entry にある category.id のカラム名
-      targetKey : 'id'          // Entry にある category.id が対応する、Category のカラム名
+      targetKey : 'id'          // 対応する Category のカラム名
     });
   };
   
-  // テーブルがなければ作成し DB と同期する
   Entry.sync();
   
   return Entry;

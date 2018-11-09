@@ -7,6 +7,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent }
 ];
 
+/**
+ * Login Routing
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

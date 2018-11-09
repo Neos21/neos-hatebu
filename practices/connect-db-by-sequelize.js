@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 // 設定をロードする
 require('dotenv').config();
 
+/** Sequelize で接続するテスト */
+
 // 接続先 URL
 const connectionString = process.env.DATABASE_URL;
 

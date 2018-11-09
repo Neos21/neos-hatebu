@@ -2,14 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginService } from './shared/services/login.service';
-import { appConstants } from './shared/constants/app-constants';
 
+/**
+ * App Component
+ */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  /**
+   * コンストラクタ
+   * 
+   * @param router Router
+   * @param loginService LoginService
+   */
   constructor(
     private router: Router,
     private loginService: LoginService

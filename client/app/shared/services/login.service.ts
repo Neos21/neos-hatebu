@@ -7,18 +7,27 @@ import { environment } from '../../../environments/environment.prod';
 
 import { appConstants } from '../constants/app-constants';
 
+/**
+ * ログイン処理を行うサービス
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+  /**
+   * コンストラクタ
+   * 
+   * @param httpClient HttpClient
+   */
   constructor(private httpClient: HttpClient) { }
   
   /**
-   * ログイン処理
+   * ログインする
    * 
    * @param userId ユーザ ID
    * @param inputPassword パスワード
    * @param isHashPassword 第2引数 inputPassword がハッシュ文字列かどうか (true なら関数内でハッシュ化しない・false か未指定ならハッシュ化する)
+   * @return Promise
    */
   public login(userId: string, inputPassword: string, isHashPassword?: boolean): Promise<any> {
     let password = inputPassword;
@@ -41,6 +50,8 @@ export class LoginService {
   
   /**
    * LocalStorage のデータを利用して自動で再ログインする
+   * 
+   * @return Promise
    */
   public autoReLogin(): Promise<any> {
     const rawUserInfo = localStorage.getItem(appConstants.localStorage.userInfoKey);

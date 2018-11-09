@@ -3,6 +3,8 @@ const pg = require('pg');
 // 設定をロードする
 require('dotenv').config();
 
+/** マスタデータを入れる */
+
 const connectionString = process.env.DATABASE_URL;
 console.log(`接続開始 : ${connectionString}`);
 const pool = new pg.Pool({

@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { LoginService } from '../../../shared/services/login.service';
 import { appConstants } from '../../../shared/constants/app-constants';
 
+/**
+ * Login Component : ログイン画面
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,6 +19,13 @@ export class LoginComponent implements OnInit {
   /** フィードバックメッセージ */
   public message: string = '';
   
+  /**
+   * コンストラクタ
+   * 
+   * @param formBuilder FormBuilder
+   * @param router Router
+   * @param loginService LoginService
+   */
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -26,6 +36,7 @@ export class LoginComponent implements OnInit {
    * 画面初期表示時の処理
    */
   public ngOnInit(): void {
+    // フォームを定義する
     this.loginForm = this.formBuilder.group({
       userId  : ['', [Validators.required]],
       password: ['', [Validators.required]]

@@ -1,5 +1,11 @@
+/**
+ * 環境変数 (Dev)
+ */
 export const environment = {
+  /** 本番環境モード */
   production: false,
+  
+  /** サーバの URL */
   serverUrl: 'http://localhost:8080'
 };
 

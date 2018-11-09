@@ -1,8 +1,15 @@
 const Model = require('../models/model');
 
-/** Categories */
+/**
+ * Categories Controller
+ */
 module.exports = {
-  /** カテゴリのみ全件取得 */
+  /**
+   * カテゴリのみ全件取得
+   * 
+   * @param _req リクエスト
+   * @param res レスポンス
+   */
   findAll: (_req, res) => {
     Model.Category.findAll({
       order: [
@@ -19,7 +26,12 @@ module.exports = {
       });
   },
   
-  /** 指定の ID のカテゴリ情報とエントリ一覧を取得する */
+  /**
+   * 指定の ID のカテゴリ情報とエントリ一覧を取得する
+   * 
+   * @param req リクエスト
+   * @param res レスポンス
+   */
   findById: (req, res) => {
     const id = req.params.id;
     Model.Category.findById(id, {

@@ -1,10 +1,12 @@
 const express = require('express');
 const path = require('path');
 
-/** Angular アプリを返すルーティング */
+/**
+ * Angular アプリを返すルーティング
+ */
 const router = express.Router();
 
-// 以下の設定だけで index.html も返せているようだ
+// 以下の設定だけで index.html も返せている様子
 router.use('/', express.static(`${__dirname}/../../dist`));
 
 // ルートへのアクセス時は念のため index.html を返すようにしておく

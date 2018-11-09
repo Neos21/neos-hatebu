@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ApiEntriesService } from '../../../shared/services/api-entries.service';
-import { ApiNgUrlsService } from '../../../shared/services/api-ng-urls.service';
 import { LogoutService } from '../../../shared/services/logout.service';
 import { CategoriesService } from '../../../shared/services/categories.service';
+import { Category } from '../../../shared/classes/category';
 
+/**
+ * Home Component : 「ホーム」画面
+ */
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,31 +15,23 @@ import { CategoriesService } from '../../../shared/services/categories.service';
 })
 export class HomeComponent implements OnInit {
   /** カテゴリ一覧 */
-  public categories: any[] = [];
+  public categories: Category[] = [];
   
   /** 表示中のカテゴリのデータ */
-  public current: any = {
-    id: 0,
-    /** カテゴリ名 */
-    name: '',
-    /** 要らない？ */
-    path: '',
-    /** 最終クロール日時 */
-    updatedAt: '',
-    /** エントリ一覧 */
-    entries: []
-  };
+  public currentCategory: Category = null;
   
+  // TODO : コメント
   constructor(
     private router: Router,
     private categoriesService: CategoriesService,
-    private apiEntriesService: ApiEntriesService,
-    private apiNgUrlsService: ApiNgUrlsService,
     private logoutService: LogoutService
   ) { }
   
+  /**
+   * 画面初期表示時の処理
+   */
   public ngOnInit(): void {
-    // カテゴリ一覧を取得する (エントリを控えるテーブルからエントリ情報を除いて SELECT する)
+    // カテゴリ一覧を取得する
     this.categoriesService.findAll()
       .then((categories) => {
         // カテゴリ一覧をメニューとして表示する
@@ -45,31 +39,22 @@ export class HomeComponent implements OnInit {
         
         // TODO : NG 情報を取得する
         
-        // 
-        return this.onShowCategory(this.categories[0].id);
+        // 「総合 - 人気」の記事を取得する
+        return this.onShowCategory(1);
       });
   }
   
-  public onShowCategory(category: { id: number; name: string; path: string }): void {
-    if(category.id === 2) {
-      console.log('テストチェック');
-      this.apiEntriesService.test();
-    }
-    
-    this.apiEntriesService.getEntries(category.id)
-      .then((entryData) => {
-        this.current.id   = category.id;
-        this.current.name = category.name;
-        this.current.path = category.path;
+  /**
+   * カテゴリ別の記事一覧を取得する
+   * 
+   * @param categoryId カテゴリ ID
+   */
+  public onShowCategory(categoryId: string|number): void {
+    this.categoriesService.findById(categoryId)
+      .then((category) => {
+        this.currentCategory = category;
         
-        this.current.updatedAt = entryData.updatedAt;
-        this.current.entries = entryData.entries
-          .filter((entry) => {
-            // NG URL 一覧に合致する URL がなかったモノのみ残す
-            return !/*this.ngDataStoreService.ngUrls*/['test'].find((ngUrl) => {
-              return ngUrl === entry.url;
-            });
-          });
+        // TODO : currentCategory.entries をフィルタする
       })
       .catch((error) => {
         // 指定のカテゴリのエントリ取得に失敗
@@ -77,19 +62,9 @@ export class HomeComponent implements OnInit {
       });
   }
   
-  public onDeleteEntry(url: string): void {
-    this.apiNgUrlsService.addNgUrl(url)
-      .then(() => {
-        // NG URL 一覧のローカルに追加する
-        // this.ngDataStoreService.ngUrls.push(url);
-        // エントリ一覧から削除する
-        this.current.entries = this.current.entries
-          .filter((entry) => {
-            return entry.url !== url;
-          });
-      });
-  }
-  
+  /**
+   * ログアウトする
+   */
   public onLogout(): void {
     this.logoutService.logout()
       .then(() => {

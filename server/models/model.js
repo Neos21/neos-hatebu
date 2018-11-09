@@ -3,7 +3,9 @@ const Sequelize = require('sequelize');
 // 環境変数をロードする
 require('dotenv').config();
 
-// Sequelize と生成したモデルを返却するオブジェクト
+/**
+ * Sequelize と生成したモデルを返却する
+ */
 const Model = {};
 
 // DB 接続する

@@ -3,7 +3,9 @@ const passport = require('passport');
 
 const authController = require('../controllers/auth-controller');
 
-/** ログイン・ログアウトのルーティング */
+/**
+ * ログイン・ログアウトのルーティング
+ */
 const router = express.Router();
 
 // ログイン
