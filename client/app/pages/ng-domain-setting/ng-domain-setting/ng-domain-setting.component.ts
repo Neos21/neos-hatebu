@@ -40,10 +40,14 @@ export class NgDomainSettingComponent implements OnInit {
       domain: ['', [Validators.required]]
     });
     
-    // NG ドメイン一覧をキャッシュから取得する
+    // NG ドメイン一覧を取得する
     this.ngDataService.findNgDomains()
       .then((ngDomains) => {
         this.ngDomains = ngDomains;
+      })
+      .catch((error) => {
+        console.error('NG ドメイン一覧取得 : 失敗', error);
+        this.message = `NG ドメイン一覧取得に失敗 : ${JSON.stringify(error)}`;
       });
   }
   
@@ -67,7 +71,7 @@ export class NgDomainSettingComponent implements OnInit {
         this.newForm.reset();
       })
       .catch((error) => {
-        console.error('NG ドメイン追加に失敗', error);
+        console.error('NG ドメイン追加 : 失敗', error);
         this.message = `NG ドメイン追加に失敗 : ${JSON.stringify(error)}`;
       });
   }
@@ -81,7 +85,7 @@ export class NgDomainSettingComponent implements OnInit {
     // サービス内で ngDomains の要素を削除している・参照渡しで利用している画面側では操作不要
     this.ngDataService.removeNgDomain(ngDomainId)
       .catch((error) => {
-        console.error('NG ドメイン削除に失敗', error);
+        console.error('NG ドメイン削除 : 失敗', error);
         this.message = `NG ドメイン削除に失敗 : ${JSON.stringify(error)}`;
       });
   }

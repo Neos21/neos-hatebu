@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+import * as moment from 'moment-timezone';
+
 import { NgUrl } from '../classes/ng-url';
 import { NgWord } from '../classes/ng-word';
 import { NgDomain } from '../classes/ng-domain';
-import { environment } from 'client/environments/environment.prod';
+import { environment } from '../../../environments/environment.prod';
 import { NgData } from '../classes/ng-data';
 
 /**
@@ -49,21 +52,68 @@ export class NgDataService {
   }
   
   /**
-   * NG URL を追加する : キャッシュには直接格納し、API 通信が失敗しても無視する
+   * NG URL 一覧を取得する
+   * 
+   * @param isForceGet true にするとキャッシュを使わず強制的に DB から取得する
+   * @return NG URL 一覧
+   */
+  public findNgUrls(isForceGet?: boolean): Promise<NgUrl[]> {
+    // 強制再取得モードになっておらず、キャッシュがあればキャッシュを返す
+    if(!isForceGet && this.ngUrls && this.ngUrls.length) {
+      return Promise.resolve(this.ngUrls);
+    }
+    
+    return this.httpClient.get(`${environment.serverUrl}/ng-urls`).toPromise()
+      .then((ngUrls: NgUrl[]) => {
+        // 取得成功・キャッシュする
+        this.ngUrls = ngUrls;
+        return ngUrls;
+      })
+      .catch((error) => {
+        console.error('NG URL 一覧取得 : 失敗', error);
+        return Promise.reject(error);
+      });
+  }
+  
+  /**
+   * NG URL を追加する : API 通信が失敗しても無視する
    * 
    * @param url NG URL
    * @return Promise
    */
   public addNgUrl(url: string): Promise<any> {
-    // キャッシュに直接追加する (id, userId, createdAt は未入力)
-    const ngUrlObj = new NgUrl();
-    ngUrlObj.url = url;
-    this.ngUrls.push(ngUrlObj);
-    
     return this.httpClient.put(`${environment.serverUrl}/ng-urls`, { ngUrl: url }).toPromise()
+      .then((ngUrl: NgUrl) => {
+        // 登録できたデータが返されるので設定する
+        this.ngUrls.push(ngUrl);
+      })
       .catch((error) => {
         // エラーは無視する
         console.warn('NG URL 追加 : 失敗', error);
+        // キャッシュにはこのデータを追加する (id, userId は未入力)
+        const ngUrlObj = new NgUrl();
+        ngUrlObj.url = url;
+        ngUrlObj.createdAt = moment.utc().toISOString();
+        this.ngUrls.push(ngUrlObj);
+      });
+  }
+  
+  /**
+   * NG URL を削除する
+   * 
+   * @param date 'YYYY-MM-DD' 形式の日付の文字列・この日付以前のデータを削除する
+   * @return 削除後の NG URL 一覧 (キャッシュを使わず再取得したもの)
+   */
+  public removeNgUrls(date: string): Promise<NgUrl[]> {
+    return this.httpClient.delete(`${environment.serverUrl}/ng-urls/`, {
+      params: new HttpParams().set('date', date)
+    }).toPromise()
+      .then(() => {
+        return this.findNgUrls(true);
+      })
+      .catch((error) => {
+        console.error('NG URL 削除 : 失敗', error);
+        return Promise.reject(error);
       });
   }
   

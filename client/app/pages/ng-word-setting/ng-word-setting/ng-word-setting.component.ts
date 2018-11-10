@@ -44,6 +44,10 @@ export class NgWordSettingComponent implements OnInit {
     this.ngDataService.findNgWords()
       .then((ngWords) => {
         this.ngWords = ngWords;
+      })
+      .catch((error) => {
+        console.error('NG ワード一覧取得 : 失敗', error);
+        this.message = `NG ワード一覧取得に失敗 : ${JSON.stringify(error)}`;
       });
   }
   
@@ -67,7 +71,7 @@ export class NgWordSettingComponent implements OnInit {
         this.newForm.reset();
       })
       .catch((error) => {
-        console.error('NG ワード追加に失敗', error);
+        console.error('NG ワード追加 : 失敗', error);
         this.message = `NG ワード追加に失敗 : ${JSON.stringify(error)}`;
       });
   }
@@ -81,7 +85,7 @@ export class NgWordSettingComponent implements OnInit {
     // サービス内で ngWords の要素を削除している・参照渡しで利用している画面側では操作不要
     this.ngDataService.removeNgWord(ngWordId)
       .catch((error) => {
-        console.error('NG ワード削除に失敗', error);
+        console.error('NG ワード削除 : 失敗', error);
         this.message = `NG ワード削除に失敗 : ${JSON.stringify(error)}`;
       });
   }

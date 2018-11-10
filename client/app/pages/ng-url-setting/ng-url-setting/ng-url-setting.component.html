@@ -1,0 +1,16 @@
+<h1>NG URL 設定</h1>
+
+<p><a [routerLink]="['/home']">戻る</a></p>
+
+<form [formGroup]="removeForm">
+  <p><input type="date" formControlName="date"> 以前のデータを <button type="button" (click)="onRemoveNgUrls()" [disabled]="removeForm.invalid">削除</button></p>
+</form>
+
+<p *ngIf="message">{{ message }}</p>
+
+<dl *ngIf="ngUrls && ngUrls.length">
+  <ng-container *ngFor="let ngUrl of ngUrls">
+    <dt>{{ ngUrl.createdAt }}</dt>
+    <dd>{{ ngUrl.url }}</dd>
+  </ng-container>
+</dl>

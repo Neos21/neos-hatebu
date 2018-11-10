@@ -26,7 +26,7 @@ module.exports = {
    * @param res レスポンス
    */
   logout: (req, res) => {
-    const userInfo = req.user;
+    const userInfo = req.user || {};
     
     req.logout();
     res.json({
