@@ -1,4 +1,24 @@
-.main {
-  display: grid;
-  grid-template-columns: 20% 80%;
+.entry-container {
+  padding: .5rem 0;
+  border-bottom: 1px solid #e5e8e9;
+}
+
+.thumbnail {
+  width: 88px;
+  height: 88px;
+  background: #e5e8e9;
+  
+  img {
+    width: 88px;
+    height: 88px;
+  }
+}
+
+.count {
+  color: #eb5269;
+  margin-right: 1rem;
+}
+
+.date {
+  color: #bbb;
 }

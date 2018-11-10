@@ -1,0 +1,183 @@
+@import '~bootstrap/scss/_functions';
+@import '~bootstrap/scss/_mixins';
+@import '~bootstrap/scss/_variables';
+
+
+// 変数
+// --------------------------------------------------------------------------------
+
+$theme-bg-colour: #008fde;
+$theme-colour: #fff;
+
+$header-height: 50px;
+$menu-width: 270px;
+
+$menu-transition: .2s;
+
+
+// 全体
+// --------------------------------------------------------------------------------
+
+a {
+  color: $theme-colour;
+  text-decoration: none;
+  
+  &:hover {
+    color: darken($theme-colour, 10%);
+  }
+}
+
+
+// ヘッダ
+// --------------------------------------------------------------------------------
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $header-height;
+  background: $theme-bg-colour;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .3);
+  z-index: 99999;
+  
+  // ハンバーガメニュー
+  .hamburger {
+    position: absolute;
+    width: auto;
+    top: 0;
+    left: 0;
+    height: $header-height;
+    padding: 0 1rem;
+    border: 0;
+    background: $theme-bg-colour;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity $menu-transition, visibility $menu-transition;
+    outline: 0;
+    cursor: pointer;
+    
+    // 幅が広い時は非表示にする
+    @include media-breakpoint-up(lg) {
+      & {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    
+    &:hover {
+      .icon-bar {
+        background: darken($theme-colour, 10%);
+      }
+    }
+    
+    .icon-bar {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: $theme-colour;
+    }
+    
+    .icon-bar + .icon-bar {
+      margin-top: 5px;
+    }
+  }
+  
+  .page-title {
+    margin: 0;
+    color: $theme-colour;
+    font-size: $font-size-lg;
+    font-weight: bold;
+    text-align: center;
+    line-height: $header-height;
+  }
+  
+  .site-title {
+    position: absolute;
+    top: calc(#{$header-height} / 2);
+    right: 0;
+    border: 0;
+    padding-right: .75rem;
+    color: $theme-colour;
+    text-align: right;
+    line-height: 1.25;
+    background: $theme-bg-colour;
+    overflow: hidden;
+    transform: translateY(-50%);
+    outline: 0;
+    cursor: pointer;
+    
+    &:hover {
+      color: darken($theme-colour, 10%);
+    }
+  }
+}
+
+
+// メニュー
+// --------------------------------------------------------------------------------
+
+.menu {
+  position: fixed;
+  top: $header-height;
+  left: -$menu-width;  // メニューの幅の分だけネガティブ指定して画面外に出しておく
+  width: $menu-width;
+  height: calc(100% - #{$header-height});  // SCSS 変数と CSS3 calc() を併用する
+  overflow-y: auto;
+  background: $theme-bg-colour;
+  transition: left $menu-transition;
+  z-index: 99999;
+  
+  ul {
+    margin: 1rem 0;
+    padding: 0;
+    list-style: none;
+    color: $theme-colour;
+    
+    ul {
+      margin: 0;
+      padding-left: 1rem;
+    }
+    
+    a,
+    span {
+      display: block;
+      padding: 0 1rem .25rem;
+    }
+    
+    .active a,
+    a:hover {
+      color: darken($theme-colour, 10%);
+    }
+  }
+}
+
+// ハンバーガメニューが表示される時はメニューを閉じておく
+@include media-breakpoint-up(lg) {
+  .menu {
+    left: 0;
+  }
+}
+
+// 本コンポーネントより親の要素 (body 要素) に .show-menu が付与された時にメニューを表示するようにする
+:host-context(.show-menu) .menu {
+  left: 0;
+}
+
+
+// コンテンツ
+// --------------------------------------------------------------------------------
+
+.contents {
+  margin-left: 0;  // メニュー非表示時のコンテンツ表示状態にする
+  padding: calc( #{$header-height} + 1rem ) .5rem 1rem;
+  transition: margin-left $menu-transition;
+  z-index: 1;
+  
+  // メニュー表示時はメニュー幅分の余白を開ける
+  @include media-breakpoint-up(lg) {
+    & {
+      margin-left: $menu-width;
+    }
+  }
+}

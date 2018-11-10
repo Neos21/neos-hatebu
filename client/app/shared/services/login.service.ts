@@ -6,6 +6,9 @@ import * as md5 from 'md5';
 import { environment } from '../../../environments/environment.prod';
 
 import { appConstants } from '../constants/app-constants';
+import { CategoriesService } from './categories.service';
+import { PageDataService } from './page-data.service';
+import { NgDataService } from './ng-data.service';
 
 /**
  * ログイン処理を行うサービス
@@ -18,8 +21,16 @@ export class LoginService {
    * コンストラクタ
    * 
    * @param httpClient HttpClient
+   * @param pageDataService PageDataService
+   * @param categoriesService CategoriesService
+   * @param ngDataService NgDataService
    */
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private pageDataService: PageDataService,
+    private categoriesService: CategoriesService,
+    private ngDataService: NgDataService
+  ) { }
   
   /**
    * ログインする
@@ -45,6 +56,16 @@ export class LoginService {
           password: password
         };
         localStorage.setItem(appConstants.localStorage.userInfoKey, JSON.stringify(localStorageUserInfo));
+        
+        // カテゴリ一覧を取得する
+        return this.categoriesService.findAll();
+      })
+      .then((categories) => {
+        // メニューに設定する
+        this.pageDataService.categoriesSubject.next(categories);
+        
+        // NG 情報を取得し、サービス自身に蓄えさせておく
+        return this.ngDataService.findAll();
       })
       .catch((error) => {
         console.error('ログイン通信 : 失敗', { userName, inputPassword, password }, error);

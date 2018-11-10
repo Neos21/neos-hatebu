@@ -5,6 +5,7 @@ import * as moment from 'moment-timezone';
 
 import { NgDataService } from '../../../shared/services/ng-data.service';
 import { NgUrl } from '../../../shared/classes/ng-url';
+import { PageDataService } from '../../../shared/services/page-data.service';
 
 /**
  * NG URL Setting Component
@@ -26,10 +27,12 @@ export class NgUrlSettingComponent implements OnInit {
    * コンストラクタ
    * 
    * @param formBuilder FormBuilder
+   * @param pageDataService PageDataService
    * @param ngDataService NgDataService
    */
   constructor(
     private formBuilder: FormBuilder,
+    private pageDataService: PageDataService,
     private ngDataService: NgDataService
   ) { }
   
@@ -37,6 +40,10 @@ export class NgUrlSettingComponent implements OnInit {
    * 画面初期表示時の処理
    */
   public ngOnInit(): void {
+    // ページタイトルを設定する
+    this.pageDataService.pageTitleSubject.next('NG URL 設定');
+    
+    // 30日前の日付を初期値に設定する
     const thirtyDaysAgo = moment().subtract(30, 'days').format('YYYY-MM-DD');
     this.removeForm = this.formBuilder.group({
       date: [thirtyDaysAgo, [Validators.required]]

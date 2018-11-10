@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { LoginService } from '../../../shared/services/login.service';
 import { appConstants } from '../../../shared/constants/app-constants';
 import { AuthGuard } from '../../../shared/guards/auth.guard';
+import { PageDataService } from '../../../shared/services/page-data.service';
 
 /**
- * Login Component : ログイン画面
+ * Login Component
  */
 @Component({
   selector: 'app-login',
@@ -25,12 +26,14 @@ export class LoginComponent implements OnInit {
    * 
    * @param formBuilder FormBuilder
    * @param router Router
+   * @param pageDataService PageDataService
    * @param loginService LoginService
    * @param authGuard AuthGuard
    */
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private pageDataService: PageDataService,
     private loginService: LoginService,
     private authGuard: AuthGuard
   ) { }
@@ -39,6 +42,9 @@ export class LoginComponent implements OnInit {
    * 画面初期表示時の処理
    */
   public ngOnInit(): void {
+    // ページタイトルを設定する
+    this.pageDataService.pageTitleSubject.next(`Neo's Hatebu`);
+    
     // フォームを定義する
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required]],

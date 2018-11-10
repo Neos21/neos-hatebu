@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { LogoutService } from '../../../shared/services/logout.service';
-import { CategoriesService } from '../../../shared/services/categories.service';
-import { Category } from '../../../shared/classes/category';
-import { NgDataService } from '../../../shared/services/ng-data.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import * as moment from 'moment-timezone';
 
+import { CategoriesService } from '../../../shared/services/categories.service';
+import { Category } from '../../../shared/classes/category';
+import { NgDataService } from '../../../shared/services/ng-data.service';
+import { PageDataService } from '../../../shared/services/page-data.service';
+
 /**
- * Home Component : 「ホーム」画面
+ * Home Component
  */
 @Component({
   selector: 'app-home',
@@ -17,9 +17,6 @@ import * as moment from 'moment-timezone';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  /** カテゴリ一覧 (エントリ一覧はキャッシュしていない) */
-  public categories: Category[] = [];
-  
   /** 表示中のカテゴリのデータ */
   public currentCategory: Category = null;
   
@@ -29,38 +26,27 @@ export class HomeComponent implements OnInit {
   /**
    * コンストラクタ
    * 
-   * @param router Router
+   * @param activatedRoute ActivatedRoute
+   * @param pageDataService PageDataService
    * @param categoriesService CategoriesService
    * @param ngDataService NgDataService
-   * @param logoutService LogoutService
    */
   constructor(
-    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private pageDataService: PageDataService,
     private categoriesService: CategoriesService,
-    private ngDataService: NgDataService,
-    private logoutService: LogoutService
+    private ngDataService: NgDataService
   ) { }
   
   /**
    * 画面初期表示時の処理
    */
   public ngOnInit(): void {
-    // カテゴリ一覧を取得する
-    this.categoriesService.findAll()
-      .then((categories) => {
-        // カテゴリ一覧をメニューとして表示する
-        this.categories = categories;
-        
-        // NG 情報を取得し、サービス自身に蓄えさせておく
-        return this.ngDataService.findAll();
-      })
-      .then(() => {
-        // 「総合 - 人気」の記事を取得する
-        this.onShowCategory(1);
-      })
-      .catch((error) => {
-        this.errorMessage = `初期表示時エラー : ${JSON.stringify(error)}`;
-      });
+    this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
+      // クエリパラメータなしの場合もこの関数に辿り着くので null の場合は 1 をデフォルト表示にする
+      const categoryId = params.get('categoryId') || '1';
+      this.onShowCategory(categoryId);
+    });
   }
   
   /**
@@ -103,7 +89,10 @@ export class HomeComponent implements OnInit {
           return entry;
         });
         
+        // 画面に設定する
         this.currentCategory = currentCategory;
+        // ページタイトルを渡す
+        this.pageDataService.pageTitleSubject.next(currentCategory.name);
       })
       .catch((error) => {
         this.errorMessage = `指定のカテゴリのエントリ取得 : 失敗 : ${JSON.stringify(error)}`;
@@ -120,16 +109,6 @@ export class HomeComponent implements OnInit {
       .then(() => {
         // 記事削除処理完了・再表示することでフィルタする
         this.onShowCategory(this.currentCategory.id);
-      });
-  }
-  
-  /**
-   * ログアウトする
-   */
-  public onLogout(): void {
-    this.logoutService.logout()
-      .then(() => {
-        this.router.navigate(['/login']);
       });
   }
   

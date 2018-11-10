@@ -52,20 +52,24 @@ export class CategoriesService {
    * @return 指定のカテゴリ情報とエントリ一覧
    */
   public findById(id: string|number): Promise<Category> {
-    const targetCategory = this.categories.find((category) => {
-      return category.id === id;
-    });
-    
-    // キャッシュがあればキャッシュを返す
-    if(targetCategory && targetCategory.entries && targetCategory.entries.length) {
-      return Promise.resolve(targetCategory);
-    }
-    
-    return this.httpClient.get(`${environment.serverUrl}/categories/${id}`).toPromise()
-      .then((category: Category) => {
-        // 取得成功・キャッシュする
-        targetCategory.entries = category.entries;
-        return category;
+    let targetCategory;
+    return this.findAll()
+      .then((categories) => {
+        targetCategory = categories.find((category) => {
+          return `${category.id}` === `${id}`;
+        });
+        
+        // キャッシュがあればキャッシュを返す
+        if(targetCategory && targetCategory.entries && targetCategory.entries.length) {
+          return Promise.resolve(targetCategory);
+        }
+        
+        return this.httpClient.get(`${environment.serverUrl}/categories/${id}`).toPromise()
+          .then((category: Category) => {
+            // 取得成功・キャッシュする
+            targetCategory.entries = category.entries;
+            return category;
+          });
       })
       .catch((error) => {
         console.error('カテゴリごとのエントリ取得 : 失敗', error);

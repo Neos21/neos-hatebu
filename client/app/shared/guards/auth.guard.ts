@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
     
     return this.loginService.autoReLogin()
       .then(() => {
-        // 認証成功・対象の画面への繊維を許可する
+        // 認証成功・対象の画面への遷移を許可する
         this.isLogined = true;
         return Promise.resolve(true);
       })

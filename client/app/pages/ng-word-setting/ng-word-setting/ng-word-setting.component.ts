@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NgDataService } from '../../../shared/services/ng-data.service';
 import { NgWord } from '../../../shared/classes/ng-word';
+import { PageDataService } from '../../../shared/services/page-data.service';
 
 /**
  * NG Word Setting Component
@@ -24,10 +25,12 @@ export class NgWordSettingComponent implements OnInit {
    * コンストラクタ
    * 
    * @param formBuilder Formbuilder
+   * @param pageDataService PageDataService
    * @param ngDataService NgDataService
    */
   constructor(
     private formBuilder: FormBuilder,
+    private pageDataService: PageDataService,
     private ngDataService: NgDataService
   ) { }
   
@@ -35,6 +38,9 @@ export class NgWordSettingComponent implements OnInit {
    * 画面初期表示時の処理
    */
   public ngOnInit(): void {
+    // ページタイトルを設定する
+    this.pageDataService.pageTitleSubject.next('NG ワード設定');
+    
     // フォームを生成する
     this.newForm = this.formBuilder.group({
       word: ['', [Validators.required]]

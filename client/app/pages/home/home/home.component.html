@@ -1,37 +1,26 @@
-<h1>Neo's Hatebu トップ</h1>
+<p *ngIf="errorMessage">{{ errorMessage }}</p>
 
-<div><button type="button" (click)="onLogout()">ログアウト</button></div>
-
-<div class="main">
-  
-  <div class="categories">
-    <h2>カテゴリ</h2>
-    <ul *ngIf="categories && categories.length">
-      <li *ngFor="let category of categories"><a [routerLink]="[]" (click)="onShowCategory(category.id)">{{ category.name }}</a></li>
-    </ul>
-    
-    <h2>設定</h2>
-    <ul>
-      <li><a [routerLink]="['/ng-url-setting']">NG URL 設定</a></li>
-      <li><a [routerLink]="['/ng-word-setting']">NG ワード設定</a></li>
-      <li><a [routerLink]="['/ng-domain-setting']">NG ドメイン設定</a></li>
-    </ul>
+<ng-container *ngIf="currentCategory">
+  <div class="row">
+    <div class="col-8">{{ currentCategory.entries.length }} 件 ({{ currentCategory.updatedAt }})</div>
+    <div class="col-4 text-right"><button type="button" class="btn btn-outline-primary" (click)="onReloadEntries(currentCategory.id)">更新</button></div>
   </div>
   
-  <div class="contents">
-    <div *ngIf="errorMessage">{{ errorMessage }}</div>
-    <ng-container *ngIf="currentCategory">
-      <h2>{{ currentCategory.name }} : {{ currentCategory.entries.length }} 件 ({{ currentCategory.updatedAt }}) <button type="button" (click)="onReloadEntries(currentCategory.id)">スクレイピング</button></h2>
-      <ol *ngIf="currentCategory.entries && currentCategory.entries.length">
-        <li *ngFor="let entry of currentCategory.entries">
-          <div><button type="button" (click)="onRemoveEntry(entry.url)">削除する</button> [{{ entry.count }} Users] [{{ entry.date }}]</div>
-          <div><strong><a [href]="entry.url" target="_blank">{{ entry.title }}</a></strong></div>
-          <p>{{ entry.description }}</p>
-          <p><img [src]="entry.faviconUrl" *ngIf="entry.faviconUrl"> <img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl"></p>
-        </li>
-      </ol>
-      <p *ngIf="!currentCategory.entries || !currentCategory.entries.length">表示できるエントリはありません。</p>
-    </ng-container>
-  </div>
+  <ng-container *ngIf="currentCategory.entries && currentCategory.entries.length">
+    <div *ngFor="let entry of currentCategory.entries" class="entry-container">
+      <div class="thumbnail">
+        <img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl">
+      </div>
+      <div><button type="button" (click)="onRemoveEntry(entry.url)">削除する</button></div>
+      <div><strong><a [href]="entry.url" target="_blank">{{ entry.title }}</a></strong></div>
+      <p>{{ entry.description }}</p>
+      <p><img [src]="entry.faviconUrl" *ngIf="entry.faviconUrl"></p>
+      <div>
+        <span class="count">{{ entry.count }} Users</span>
+        <span class="date">{{ entry.date }}</span>
+      </div>
+    </div>
+  </ng-container>
   
-</div>
+  <p *ngIf="!currentCategory.entries || !currentCategory.entries.length">表示できるエントリはありません。</p>
+</ng-container>
