@@ -1,26 +1,39 @@
-<p *ngIf="errorMessage">{{ errorMessage }}</p>
+<p *ngIf="errorMessage" class="text-danger font-weight-bold">{{ errorMessage }}</p>
 
 <ng-container *ngIf="currentCategory">
-  <div class="row">
-    <div class="col-8">{{ currentCategory.entries.length }} 件 ({{ currentCategory.updatedAt }})</div>
-    <div class="col-4 text-right"><button type="button" class="btn btn-outline-primary" (click)="onReloadEntries(currentCategory.id)">更新</button></div>
+  <div class="clearfix mb-2">
+    <div class="float-right"><button type="button" class="btn btn-sm btn-outline-primary" (click)="onReloadEntries(currentCategory.id)">更新</button></div>
+    <div>{{ currentCategory.entries.length }} 件 ({{ currentCategory.updatedAt }} クロール)</div>
   </div>
   
   <ng-container *ngIf="currentCategory.entries && currentCategory.entries.length">
     <div *ngFor="let entry of currentCategory.entries" class="entry-container">
-      <div class="thumbnail">
-        <img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl">
+      <div class="favicon">
+        <img [src]="entry.faviconUrl" *ngIf="entry.faviconUrl">
       </div>
-      <div><button type="button" (click)="onRemoveEntry(entry.url)">削除する</button></div>
-      <div><strong><a [href]="entry.url" target="_blank">{{ entry.title }}</a></strong></div>
-      <p>{{ entry.description }}</p>
-      <p><img [src]="entry.faviconUrl" *ngIf="entry.faviconUrl"></p>
-      <div>
-        <span class="count">{{ entry.count }} Users</span>
+      
+      <a [href]="entry.url" target="_blank"  class="entry-info">
+        <div class="title">
+          {{ entry.title }}
+        </div>
+        <div class="description">
+          <div>{{ entry.description }}</div>
+        </div>
+      </a>
+      <div class="entry-side">
+        <div class="thumbnail">
+          <a [href]="entry.url" target="_blank"><img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl"></a>
+        </div>
+        <div class="remove">
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)">削除する</button>
+        </div>
+      </div>
+      <div class="entry-meta">
+        <a href="{{ entry.url | hatebuUrl }}" target="_blank" class="count">{{ entry.count }} Users</a>
         <span class="date">{{ entry.date }}</span>
       </div>
     </div>
   </ng-container>
   
-  <p *ngIf="!currentCategory.entries || !currentCategory.entries.length">表示できるエントリはありません。</p>
+  <p *ngIf="!currentCategory.entries || !currentCategory.entries.length" class="text-warning font-weight-bold">表示できるエントリはありません。</p>
 </ng-container>

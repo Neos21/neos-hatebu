@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { HatebuUrlPipe } from './pipes/hatebu-url.pipe';
+
 /**
  * Shared Module
  */
@@ -13,12 +15,17 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
+  declarations: [
+    HatebuUrlPipe
+  ],
   exports: [
     // Re-Export
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    // Pipes
+    HatebuUrlPipe
   ]
 })
 export class SharedModule { }

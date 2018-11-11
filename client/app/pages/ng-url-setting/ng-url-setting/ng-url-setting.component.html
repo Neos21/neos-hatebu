@@ -1,12 +1,12 @@
-<h1>NG URL 設定</h1>
-
-<p><a [routerLink]="['/home']">戻る</a></p>
-
-<form [formGroup]="removeForm">
-  <p><input type="date" formControlName="date"> 以前のデータを <button type="button" (click)="onRemoveNgUrls()" [disabled]="removeForm.invalid">削除</button></p>
+<form [formGroup]="removeForm" class="form-inline">
+  <p>
+    <input type="date" formControlName="date" class="form-control d-inline w-auto">
+    以前を
+    <button type="button" class="btn btn-danger" (click)="onRemoveNgUrls()" [disabled]="removeForm.invalid">削除</button>
+  </p>
 </form>
 
-<p *ngIf="message">{{ message }}</p>
+<p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
 
 <dl *ngIf="ngUrls && ngUrls.length">
   <ng-container *ngFor="let ngUrl of ngUrls">
@@ -14,3 +14,5 @@
     <dd>{{ ngUrl.url }}</dd>
   </ng-container>
 </dl>
+
+<p *ngIf="!ngUrls || !ngUrls.length" class="text-warning font-weight-bold">NG URL は登録されていません。</p>

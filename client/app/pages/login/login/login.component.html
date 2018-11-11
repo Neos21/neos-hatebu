@@ -1,18 +1,17 @@
-<h1>Neo's Hatebu</h1>
-<p>ログインしてください。</p>
+<h2>Neo's Hatebu</h2>
 
 <form [formGroup]="loginForm">
   <dl>
     <dt>ユーザ名</dt>
     <dd>
-      <p><input type="text" formControlName="userName"></p>
+      <p><input type="text" formControlName="userName" class="form-control"></p>
     </dd>
     <dt>パスワード</dt>
     <dd>
-      <p><input type="password" formControlName="password"></p>
+      <p><input type="password" formControlName="password" class="form-control"></p>
     </dd>
   </dl>
-  <p><button type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">ログイン</button></p>
+  <p><button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loginForm.invalid">ログイン</button></p>
 </form>
 
-<p *ngIf="message"><strong>{{ message }}</strong></p>
+<p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
