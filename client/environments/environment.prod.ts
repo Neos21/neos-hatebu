@@ -6,5 +6,5 @@ export const environment = {
   production: true,
   
   /** サーバの URL */
-  serverUrl: 'http://localhost:8080'
+  serverUrl: 'https://neos-hatebu.herokuapp.com'
 };
