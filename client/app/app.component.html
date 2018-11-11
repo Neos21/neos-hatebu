@@ -1,0 +1,38 @@
+<div class="header">
+  <button class="hamburger" (click)="toggleMenu()">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <h1 class="page-title">{{ pageTitle }}</h1>
+  <button class="site-title" (click)="onTop()">Neo's<br>Hatebu</button>
+</div>
+
+<div class="menu">
+  <ul *ngIf="isLogined()">
+    <li *ngIf="categories && categories.length">
+      <span class="font-weight-bold">カテゴリ</span>
+      <ul>
+        <li *ngFor="let category of categories"><a [routerLink]="['/home']" [queryParams]="{ 'categoryId': category.id }">{{ category.name }}</a></li>
+      </ul>
+    </li>
+    <li>
+      <span class="font-weight-bold">設定</span>
+      <ul>
+        <li><a [routerLink]="['/ng-url-setting']">NG URL 設定</a></li>
+        <li><a [routerLink]="['/ng-word-setting']">NG ワード設定</a></li>
+        <li><a [routerLink]="['/ng-domain-setting']">NG ドメイン設定</a></li>
+      </ul>
+    </li>
+    <li class="mt-4"><a [routerLink]="[]" (click)="onLogout()">ログアウト</a></li>
+  </ul>
+  <ul *ngIf="!isLogined()">
+    <li><a [routerLink]="['/login']" (click)="toggleMenu(false)">ログインしてください</a></li>
+  </ul>
+</div>
+
+<button type="button" class="menu-bg" (click)="toggleMenu(false)"><span>メニューを閉じる</span></button>
+
+<div class="contents">
+  <router-outlet></router-outlet>
+</div>

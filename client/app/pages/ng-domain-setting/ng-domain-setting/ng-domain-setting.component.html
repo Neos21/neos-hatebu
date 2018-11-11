@@ -1,0 +1,17 @@
+<form [formGroup]="newForm" class="form-inline">
+  <p>
+    <input type="text" formControlName="domain" class="form-control d-inline w-auto mr-2" placeholder="NG ドメインを追加">
+    <button type="button" class="btn btn-primary" (click)="onAddNgDomain()" [disabled]="newForm.invalid">追加</button>
+  </p>
+</form>
+
+<p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
+
+<ol *ngIf="ngDomains && ngDomains.length">
+  <li *ngFor="let ngDomain of ngDomains" class="mb-1">
+    <button type="button" class="btn btn-sm btn-danger" (click)="onRemoveNgDomain(ngDomain.id)">削除</button>
+    {{ ngDomain.domain }}
+  </li>
+</ol>
+
+<p *ngIf="!ngDomains || !ngDomains.length" class="text-warning font-weight-bold">NG ドメインは登録されていません。</p>

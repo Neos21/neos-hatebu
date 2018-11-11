@@ -1,0 +1,17 @@
+<form [formGroup]="newForm" class="form-inline">
+  <p>
+    <input type="text" formControlName="word" class="form-control d-inline w-auto mr-2" placeholder="NG ワードを追加">
+    <button type="button" class="btn btn-primary" (click)="onAddNgWord()" [disabled]="newForm.invalid">追加</button>
+  </p>
+</form>
+
+<p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
+
+<ol *ngIf="ngWords && ngWords.length">
+  <li *ngFor="let ngWord of ngWords" class="mb-1">
+    <button type="button" class="btn btn-sm btn-danger" (click)="onRemoveNgWord(ngWord.id)">削除</button>
+    {{ ngWord.word }}
+  </li>
+</ol>
+
+<p *ngIf="!ngWords || !ngWords.length" class="text-warning font-weight-bold">NG ワードは登録されていません。</p>
