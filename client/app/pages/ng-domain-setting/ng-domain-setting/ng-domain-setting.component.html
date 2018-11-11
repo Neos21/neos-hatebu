@@ -7,6 +7,8 @@
 
 <p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
 
+<p *ngIf="ngDomains && ngDomains.length">全 {{ ngDomains.length }} 件</p>
+
 <ol *ngIf="ngDomains && ngDomains.length">
   <li *ngFor="let ngDomain of ngDomains" class="mb-1">
     <button type="button" class="btn btn-sm btn-danger" (click)="onRemoveNgDomain(ngDomain.id)">削除</button>

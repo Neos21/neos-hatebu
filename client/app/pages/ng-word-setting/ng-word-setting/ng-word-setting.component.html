@@ -7,6 +7,8 @@
 
 <p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
 
+<p *ngIf="ngWords && ngWords.length">全 {{ ngWords.length }} 件</p>
+
 <ol *ngIf="ngWords && ngWords.length">
   <li *ngFor="let ngWord of ngWords" class="mb-1">
     <button type="button" class="btn btn-sm btn-danger" (click)="onRemoveNgWord(ngWord.id)">削除</button>

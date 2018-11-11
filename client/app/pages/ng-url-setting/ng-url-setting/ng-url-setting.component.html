@@ -8,11 +8,15 @@
 
 <p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
 
-<dl *ngIf="ngUrls && ngUrls.length">
-  <ng-container *ngFor="let ngUrl of ngUrls">
-    <dt>{{ ngUrl.createdAt }}</dt>
-    <dd>{{ ngUrl.url }}</dd>
-  </ng-container>
-</dl>
+<p *ngIf="ngUrls && ngUrls.length">全 {{ ngUrls.length }} 件</p>
+
+<ol *ngIf="ngUrls && ngUrls.length">
+  <li *ngFor="let ngUrl of ngUrls">
+    <div>
+      <span class="date">{{ ngUrl.createdAt }}</span>
+      <span class="url"><a [href]="ngUrl.url" target="_blank">{{ ngUrl.url }}</a></span>
+    </div>
+  </li>
+</ol>
 
 <p *ngIf="!ngUrls || !ngUrls.length" class="text-warning font-weight-bold">NG URL は登録されていません。</p>
