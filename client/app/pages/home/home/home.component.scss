@@ -108,6 +108,12 @@
     margin-right: .75rem;
     color: #eb5269;
     text-decoration: none;
+    
+    span {
+      display: inline-block;
+      width: 1.75rem;
+      text-align: right;
+    }
   }
   
   .date {
