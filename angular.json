@@ -24,6 +24,7 @@
             "tsConfig": "client/tsconfig.app.json",
             "assets": [
               "client/favicon.ico",
+              "client/apple-touch-icon.png",
               "client/assets"
             ],
             "styles": [
