@@ -15,7 +15,7 @@ const pool = new pg.Pool({
 Promise.resolve()
   .then(() => {
     console.log(`管理ユーザ登録 : ${process.env.CLIENT_ADMIN_PASSWORD}`);
-    return pool.query(`INSERT INTO users ( id, user_name, password ) VALUES ( 1, 'Neos21', '${process.env.CLIENT_ADMIN_PASSWORD}' )`);
+    return pool.query(`INSERT INTO users ( id, user_name, password ) VALUES ( 1, 'Neos21', 'パスワードの MD5 ハッシュ' )`);
   })
   .then ((r) => { console.log('成功', r); })
   .catch((e) => { console.log('失敗', e); })

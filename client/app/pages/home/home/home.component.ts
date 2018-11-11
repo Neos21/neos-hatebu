@@ -105,7 +105,6 @@ export class HomeComponent implements OnInit {
    * @param url 削除する記事の URL
    */
   public onRemoveEntry(url: string): void {
-    return console.log('おｋ');
     this.ngDataService.addNgUrl(url)
       .then(() => {
         // 記事削除処理完了・再表示することでフィルタする
