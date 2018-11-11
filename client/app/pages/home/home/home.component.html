@@ -3,7 +3,7 @@
 <ng-container *ngIf="currentCategory">
   <div class="clearfix mb-2">
     <div class="float-right"><button type="button" class="btn btn-sm btn-outline-primary" (click)="onReloadEntries(currentCategory.id)">更新</button></div>
-    <div>{{ currentCategory.entries.length }} 件 ({{ currentCategory.updatedAt }} クロール)</div>
+    <div><span class="entries-count">{{ currentCategory.entries.length }}</span> 件 ({{ currentCategory.updatedAt }} クロール)</div>
   </div>
   
   <ng-container *ngIf="currentCategory.entries && currentCategory.entries.length">

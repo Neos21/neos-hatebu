@@ -2,6 +2,12 @@
 @import '~bootstrap/scss/_mixins';
 @import '~bootstrap/scss/_variables';
 
+.entries-count {
+  display: inline-block;
+  width: 2.5rem;
+  text-align: right;
+}
+
 .entry-container {
   display: grid;
   grid-template-columns: 16px 4px 1fr 4px 88px;
