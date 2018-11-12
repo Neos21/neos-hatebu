@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const Sequelize = require('sequelize');
+const moment = require('moment-timezone');
 const requestPromise = require('request-promise');
 const cheerio = require('cheerio');
 
@@ -14,13 +15,16 @@ require('dotenv').config();
 
 console.log('処理開始', new Date());
 const Model = createModel();
-findCategories(Model)
+removeNgUrls(Model)
+  .then(() => {
+    return findCategories(Model);
+  })
   .then((categories) => {
     console.log('カテゴリ一覧取得', categories.length);
     return categories.reduce((prevPromise, category) => {
-      console.log('直列処理', category.name);
       return prevPromise
         .then(() => {
+          console.log('直列処理', category.name);
           return scrapeEntries(Model, category.id, category.pageUrl);
         })
         .catch((error) => {
@@ -59,6 +63,7 @@ function createModel() {
   // 各モデルを定義・格納する
   Model.Category = createCategoryModel(sequelize);
   Model.Entry    = createEntryModel(sequelize);
+  Model.NgUrl    = createNgUrlModel(sequelize);
   // 各モデルが associate() 関数を定義していれば実行し、関係を定義する
   Object.keys(Model).forEach((key) => {
     const model = Model[key];
@@ -74,7 +79,26 @@ function createModel() {
 };
 
 /**
- * Category テーブルのモデルを作成する
+ * NG URLs テーブルのモデルを作成する
+ * 
+ * @param sequelize Sequelize インスタンス
+ * @return モデル
+ */
+function createNgUrlModel(sequelize) {
+  const NgUrl = sequelize.define('ng_urls', {
+    id       : { field: 'id'        , type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },  // ID (勝手に生成されるようなので用途はないが作っておく)
+    userId   : { field: 'user_id'   , type: Sequelize.INTEGER, allowNull: false },  // ユーザ ID (users.id)
+    url      : { field: 'url'       , type: Sequelize.TEXT   , allowNull: false },  // NG URL (イメージ的にはユーザ ID との複合ユニークだが UPSERT で対処する)
+    createdAt: { field: 'created_at', type: Sequelize.DATE   , allowNull: false }   // 登録日 (一定期間後に削除するため)
+  }, {
+    updatedAt: false
+  });
+  NgUrl.sync();
+  return NgUrl;
+};
+
+/**
+ * Categories テーブルのモデルを作成する
  * 
  * @param sequelize Sequelize インスタンス
  * @return モデル
@@ -100,7 +124,7 @@ function createCategoryModel(sequelize) {
 }
 
 /**
- * Entry テーブルのモデルを作成する
+ * Entries テーブルのモデルを作成する
  * 
  * @param sequelize Sequelize インスタンス
  * @return モデル
@@ -135,6 +159,22 @@ function createEntryModel(sequelize) {
 // DB 操作
 // ====================================================================================================
 
+/**
+ * 過去の NG URL を削除する
+ * 
+ * @param Model モデル
+ * @return Promise
+ */
+function removeNgUrls(Model) {
+  console.log('5日前の NG URL を削除');
+  return Model.NgUrl.destroy({
+    where: {
+      createdAt: {
+        [Sequelize.Op.lt]: moment().subtract(5, 'days').toDate()
+      }
+    }
+  });
+}
 
 /**
  * カテゴリ情報を全て取得する
@@ -143,6 +183,7 @@ function createEntryModel(sequelize) {
  * @return Promise
  */
 function findCategories(Model) {
+  console.log('全カテゴリ情報取得');
   return Model.Category.findAll({
     order: [
       ['id', 'ASC']
