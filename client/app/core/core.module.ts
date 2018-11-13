@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { CustomInterceptor } from './interceptors/custom-interceptor.service';
+import { CustomInterceptor } from './interceptors/custom.interceptor';
 
 /**
  * Core Module

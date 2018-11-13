@@ -43,10 +43,10 @@ export class NgUrlSettingComponent implements OnInit {
     // ページタイトルを設定する
     this.pageDataService.pageTitleSubject.next('NG URL 設定');
     
-    // 30日前の日付を初期値に設定する
-    const thirtyDaysAgo = moment().subtract(30, 'days').format('YYYY-MM-DD');
+    // 5日前の日付を初期値に設定する
+    const defaultValue = moment().subtract(5, 'days').format('YYYY-MM-DD');
     this.removeForm = this.formBuilder.group({
-      date: [thirtyDaysAgo, [Validators.required]]
+      date: [defaultValue, [Validators.required]]
     });
     
     // NG URL 一覧を取得し画面に設定する

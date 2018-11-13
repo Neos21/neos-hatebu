@@ -19,7 +19,14 @@ export class HatebuUrlPipe implements PipeTransform {
       return '';
     }
     
-    const encodedUrl = encodeURI(value.replace(/http(s)?:\/\//, ''));
-    return `http://b.hatena.ne.jp/entry/s/${encodedUrl}`;
+    if(value.startsWith('https')) {
+      // HTTPS の場合は 'entry/s/' を付与する
+      const encodedUrl = encodeURI(value.replace(/https:\/\//, ''));
+      return `http://b.hatena.ne.jp/entry/s/${encodedUrl}`;
+    }
+    else {
+      const encodedUrl = encodeURI(value.replace(/http:\/\//, ''));
+      return `http://b.hatena.ne.jp/entry/${encodedUrl}`;
+    }
   }
 }

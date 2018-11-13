@@ -1,8 +1,8 @@
-<form [formGroup]="removeForm" class="form-inline">
+<form [formGroup]="removeForm" class="form-inline" (ngSubmit)="onRemoveNgUrls()">
   <p>
     <input type="date" formControlName="date" class="form-control d-inline w-auto">
     以前を
-    <button type="button" class="btn btn-danger" (click)="onRemoveNgUrls()" [disabled]="removeForm.invalid">削除</button>
+    <button type="submit" class="btn btn-danger" [disabled]="removeForm.invalid">削除</button>
   </p>
 </form>
 

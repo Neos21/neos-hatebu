@@ -45,4 +45,4 @@ const rssUrls = [
 ];
 
 // 実行
-// parseRss(rssUrls[0]);
+parseRss(rssUrls[0]);

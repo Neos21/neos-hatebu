@@ -1,7 +1,7 @@
-<form [formGroup]="newForm" class="form-inline">
+<form [formGroup]="newForm" class="form-inline" (ngSubmit)="onAddNgDomain()">
   <p>
     <input type="text" formControlName="domain" class="form-control d-inline w-auto mr-2" placeholder="NG ドメインを追加">
-    <button type="button" class="btn btn-primary" (click)="onAddNgDomain()" [disabled]="newForm.invalid">追加</button>
+    <button type="submit" class="btn btn-primary" [disabled]="newForm.invalid">追加</button>
   </p>
 </form>
 

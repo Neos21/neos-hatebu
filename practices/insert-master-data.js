@@ -11,14 +11,17 @@ const pool = new pg.Pool({
   connectionString: connectionString
 });
 
-// ターミナルで SQL 動かそうとすると日本語が化けて登録できないのでこのスクリプトで登録した…
 Promise.resolve()
   .then(() => {
     console.log(`管理ユーザ登録 : ${process.env.CLIENT_ADMIN_PASSWORD}`);
-    return pool.query(`INSERT INTO users ( id, user_name, password ) VALUES ( 1, 'Neos21', 'パスワードの MD5 ハッシュ' )`);
+    return pool.query(`INSERT INTO users ( id, user_name, password ) VALUES ( 1, 'ユーザ名', 'パスワードの MD5 ハッシュ' )`);
   })
-  .then ((r) => { console.log('成功', r); })
-  .catch((e) => { console.log('失敗', e); })
+  .then ((result) => {
+    console.log('成功', result);
+  })
+  .catch((error) => {
+    console.log('失敗', error);
+  })
   .then(() => {
     console.log('カテゴリマスタ登録');
     return pool.query(`
@@ -45,8 +48,12 @@ Promise.resolve()
         ( 20, 'アニメとゲーム - 新着', 'http://b.hatena.ne.jp/entrylist/game.rss'         , 'http://b.hatena.ne.jp/entrylist/game'         , current_timestamp )
     `);
   })
-  .then ((r) => { console.log('成功', r); })
-  .catch((e) => { console.log('失敗', e); })
+  .then ((result) => {
+    console.log('成功', result);
+  })
+  .catch((error) => {
+    console.log('失敗', error);
+  })
   .then (()  => {
     console.log('切断');
     return pool.end();

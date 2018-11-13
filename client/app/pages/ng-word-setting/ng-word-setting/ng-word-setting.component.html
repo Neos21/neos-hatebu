@@ -1,7 +1,7 @@
-<form [formGroup]="newForm" class="form-inline">
+<form [formGroup]="newForm" class="form-inline" (ngSubmit)="onAddNgWord()">
   <p>
     <input type="text" formControlName="word" class="form-control d-inline w-auto mr-2" placeholder="NG ワードを追加">
-    <button type="button" class="btn btn-primary" (click)="onAddNgWord()" [disabled]="newForm.invalid">追加</button>
+    <button type="submit" class="btn btn-primary" [disabled]="newForm.invalid">追加</button>
   </p>
 </form>
 

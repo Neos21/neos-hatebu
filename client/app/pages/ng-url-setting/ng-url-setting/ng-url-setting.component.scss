@@ -13,11 +13,13 @@ li > div {
   .date {
     grid-template-columns: 1;
     font-weight: bold;
+    white-space: nowrap;
   }
   
   .url {
     grid-template-columns: 2;
     margin-left: 1rem;
+    word-break: break-all;
     
     @include media-breakpoint-down(sm) {
       display: block;

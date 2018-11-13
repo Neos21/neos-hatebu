@@ -67,9 +67,9 @@ export class HomeComponent implements OnInit {
             });
           })
           .filter((entry) => {
-            // NG ワードをタイトルに含む記事を省く
+            // NG ワードをタイトルか本文に含む記事を省く
             return !this.ngDataService.ngWords.some((ngWord) => {
-              return entry.title.includes(ngWord.word);
+              return entry.title.includes(ngWord.word) || entry.description.includes(ngWord.word);
             });
           })
           .filter((entry) => {
