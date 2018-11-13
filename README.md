@@ -14,9 +14,9 @@ __[Enter This Web App.](https://neos-hatebu.herokuapp.com/)__
 1. Heroku プロジェクトを作成する
 2. Heroku Postgres アドオンをインストールする
 3. Heroku に以下の環境変数 (Config Vars) を設定する
-  - `DATABASE_URL` : Herkou Postgres が自動設定
-  - `IS_HTTPS` : `false`
-  - `PGSSLMODE` : `allow`
+    - `DATABASE_URL` : Herkou Postgres が自動設定
+    - `IS_HTTPS` : `false`
+    - `PGSSLMODE` : `allow`
 4. この Git リポジトリを Fork する
 5. Heroku プロジェクトに `git push` する
 6. `practices/insert-master-data.js` 中の `INSERT INTO useres` 文にログインユーザの名前とパスワードの MD5 ハッシュ文字列を記述する
