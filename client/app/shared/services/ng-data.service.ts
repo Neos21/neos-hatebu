@@ -82,19 +82,14 @@ export class NgDataService {
    * @return Promise
    */
   public addNgUrl(url: string): Promise<any> {
+    // this.ngUrls への追加は呼び出し元である HomeComponent にて、キャッシュ用データを追加しているのでココでは何もしない
     return this.httpClient.put(`${environment.serverUrl}/ng-urls`, { ngUrl: url }).toPromise()
-      .then((ngUrl: NgUrl) => {
-        // 登録できたデータが返されるので設定する
-        this.ngUrls.push(ngUrl);
+      .then((_ngUrl: NgUrl) => {
+        // 登録できたデータが返されるが未使用
       })
       .catch((error) => {
         // エラーは無視する
         console.warn('NG URL 追加 : 失敗', error);
-        // キャッシュにはこのデータを追加する (id, userId は未入力)
-        const ngUrlObj = new NgUrl();
-        ngUrlObj.url = url;
-        ngUrlObj.createdAt = moment.utc().toISOString();
-        this.ngUrls.push(ngUrlObj);
       });
   }
   

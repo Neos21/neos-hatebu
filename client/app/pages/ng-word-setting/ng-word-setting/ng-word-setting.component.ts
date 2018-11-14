@@ -61,7 +61,8 @@ export class NgWordSettingComponent implements OnInit {
    * NG ワードを追加する
    */
   public onAddNgWord(): void {
-    const newWord = this.newForm.value.word;
+    // プロトコル部分があれば除去しておく
+    const newWord = `${this.newForm.value.word}`.replace(/^http(s)?:\/\//, '');
     
     if(this.ngWords.some((ngWord) => {
       return ngWord.word === newWord;

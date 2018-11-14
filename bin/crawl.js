@@ -200,7 +200,7 @@ function findCategories(Model) {
  * @return Promise
  */
 function scrapeEntries(Model, categoryId, categoryPageUrl) {
-  console.log('  スクレイピング開始');
+  console.log('--- スクレイピング開始');
   // スクレイピングして INSERT するエントリ一覧
   const insertEntries = [];
   // ページ URL を指定してスクレイピングする
@@ -215,7 +215,7 @@ function scrapeEntries(Model, categoryId, categoryPageUrl) {
     }
   })
     .then(($) => {
-      console.log('  エントリパース');
+      console.log('--- エントリパース');
       // ページ取得成功・エントリごとに処理する
       $('.entrylist-contents').each((_index, element) => {
         const linkElem = $(element).find('.entrylist-contents-title a');
@@ -233,7 +233,7 @@ function scrapeEntries(Model, categoryId, categoryPageUrl) {
         // エントリ一覧に追加する
         insertEntries.push({ categoryId, title, url, description, count, date, faviconUrl, thumbnailUrl });
       });
-      console.log('  先に DELETE');
+      console.log('--- 先に DELETE');
       // INSERT の準備ができたので、先に指定のカテゴリ ID のエントリ一覧を削除する
       return Model.Entry.destroy({
         where: {
@@ -242,12 +242,12 @@ function scrapeEntries(Model, categoryId, categoryPageUrl) {
       });
     })
     .then((_result) => {
-      console.log('  一括 INSERT');
+      console.log('--- 一括 INSERT');
       // 事前削除完了 (_result は削除件数)・エントリ一覧を一括追加する
       return Model.Entry.bulkCreate(insertEntries);
     })
     .then((_afterEntries) => {
-      console.log('  Category 更新');
+      console.log('--- Category 更新');
       // 一括追加完了 (_afterEntries.length は追加件数)・カテゴリテーブルの最終クロール日時も更新する
       return Model.Category.update({ }, {
         where: {

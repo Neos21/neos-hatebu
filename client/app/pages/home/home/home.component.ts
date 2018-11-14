@@ -7,6 +7,7 @@ import { CategoriesService } from '../../../shared/services/categories.service';
 import { Category } from '../../../shared/classes/category';
 import { NgDataService } from '../../../shared/services/ng-data.service';
 import { PageDataService } from '../../../shared/services/page-data.service';
+import { NgUrl } from '../../../shared/classes/ng-url';
 
 /**
  * Home Component
@@ -19,7 +20,8 @@ import { PageDataService } from '../../../shared/services/page-data.service';
 export class HomeComponent implements OnInit {
   /** 表示中のカテゴリのデータ */
   public currentCategory: Category = null;
-  
+  /** 読込中のフィードバックメッセージ */
+  public isLoading: boolean = true;
   /** エラー時のフィードバックメッセージ */
   public errorMessage: string = '';
   
@@ -55,8 +57,22 @@ export class HomeComponent implements OnInit {
    * @param categoryId カテゴリ ID
    */
   public onShowCategory(categoryId: string | number): void {
-    this.errorMessage = '';  // ココでリセットしておけば全てのイベントに対応できる
-    this.categoriesService.findById(categoryId)
+    // ココでリセットしておけば全てのイベントに対応できる
+    this.currentCategory = null;
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    this.categoriesService.findAll()
+      .then((categories) => {
+        const currentCategory = categories.find((category) => {
+          return `${category.id}` === `${categoryId}`;
+        });
+        
+        // 先にページタイトルを渡す (CategoryService#findAll() はキャッシュされているはずなので)
+        this.pageDataService.pageTitleSubject.next(currentCategory.name);
+        
+        return this.categoriesService.findById(categoryId);
+      })
       .then((category) => {
         // NG 情報を参照して除外していく
         const filteredEntries = category.entries
@@ -89,12 +105,13 @@ export class HomeComponent implements OnInit {
           return entry;
         });
         
+        // 読込中の表示を消す
+        this.isLoading = false;
         // 画面に設定する
         this.currentCategory = currentCategory;
-        // ページタイトルを渡す
-        this.pageDataService.pageTitleSubject.next(currentCategory.name);
       })
       .catch((error) => {
+        this.isLoading = false;
         this.errorMessage = `指定のカテゴリのエントリ取得 : 失敗 : ${JSON.stringify(error)}`;
       });
   }
@@ -105,11 +122,19 @@ export class HomeComponent implements OnInit {
    * @param url 削除する記事の URL
    */
   public onRemoveEntry(url: string): void {
-    this.ngDataService.addNgUrl(url)
-      .then(() => {
-        // 記事削除処理完了・再表示することでフィルタする
-        this.onShowCategory(this.currentCategory.id);
-      });
+    // 見た目のレスポンスを良くするため、キャッシュにはこの場でデータを作って追加する (id, userId は未入力)
+    const ngUrl = new NgUrl();
+    ngUrl.url = url;
+    ngUrl.createdAt = moment.utc().toISOString();
+    this.ngDataService.ngUrls.push(ngUrl);
+    
+    // この場で削除する記事を省いておく (onShowCategory() で処理すると重たいため)
+    this.currentCategory.entries = this.currentCategory.entries.filter((entry) => {
+      return entry.url !== url;
+    });
+    
+    // 記事を削除するための API を叩く
+    this.ngDataService.addNgUrl(url);
   }
   
   /**
