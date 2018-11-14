@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NgDataService } from '../../../shared/services/ng-data.service';
-import { NgDomain } from '../../../shared/classes/ng-domain';
 import { PageDataService } from '../../../shared/services/page-data.service';
+import { NgDomain } from '../../../shared/classes/ng-domain';
 
 /**
  * NG Domain Setting Component
@@ -61,7 +61,10 @@ export class NgDomainSettingComponent implements OnInit {
    * NG ドメインを追加する
    */
   public onAddNgDomain(): void {
-    const newDomain = this.newForm.value.domain;
+    this.message = '';
+    
+    // プロトコル部分があれば除去しておく
+    const newDomain = `${this.newForm.value.domain}`.replace(/^http(s)?:\/\//, '');
     
     if(this.ngDomains.some((ngDomain) => {
       return ngDomain.domain === newDomain;
@@ -88,6 +91,8 @@ export class NgDomainSettingComponent implements OnInit {
    * @param ngDomainId 削除する NG ドメインの ID
    */
   public onRemoveNgDomain(ngDomainId: string|number): void {
+    this.message = '';
+    
     // サービス内で ngDomains の要素を削除している・参照渡しで利用している画面側では操作不要
     this.ngDataService.removeNgDomain(ngDomainId)
       .catch((error) => {

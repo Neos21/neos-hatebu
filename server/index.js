@@ -28,7 +28,7 @@ app.use(session({
   saveUninitialized: false,  // 未認証時のセッションを保存しないようにする
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7,  // クッキーの有効期限をミリ秒指定 (1週間)
-    secure: (process.env.IS_HTTPS === 'true')  // HTTP 利用時は false にする
+    secure: false  // HTTP 利用時は false にする・Heroku 環境でも true にするとうまくセッション管理できなかったので false のままにする
   }
 }));
 
@@ -62,5 +62,5 @@ app.use('/', require('./routes/router'));
 const server = app.listen(process.env.PORT || 8080, () => {
   const host = server.address().address;
   const port = server.address().port;
-  console.log(`Neo's Hatebu : Listening at http${process.env.IS_HTTPS === 'true' ? 's' : ''}://${host}:${port}`);
+  console.log(`Neo's Hatebu : Listening at https://${host}:${port}`);
 });

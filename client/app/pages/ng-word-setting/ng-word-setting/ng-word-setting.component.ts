@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NgDataService } from '../../../shared/services/ng-data.service';
-import { NgWord } from '../../../shared/classes/ng-word';
 import { PageDataService } from '../../../shared/services/page-data.service';
+import { NgWord } from '../../../shared/classes/ng-word';
 
 /**
  * NG Word Setting Component
@@ -61,8 +61,9 @@ export class NgWordSettingComponent implements OnInit {
    * NG ワードを追加する
    */
   public onAddNgWord(): void {
-    // プロトコル部分があれば除去しておく
-    const newWord = `${this.newForm.value.word}`.replace(/^http(s)?:\/\//, '');
+    this.message = '';
+    
+    const newWord = this.newForm.value.word;
     
     if(this.ngWords.some((ngWord) => {
       return ngWord.word === newWord;
@@ -89,6 +90,8 @@ export class NgWordSettingComponent implements OnInit {
    * @param ngWordId 削除する NG ワードの ID
    */
   public onRemoveNgWord(ngWordId: string|number): void {
+    this.message = '';
+    
     // サービス内で ngWords の要素を削除している・参照渡しで利用している画面側では操作不要
     this.ngDataService.removeNgWord(ngWordId)
       .catch((error) => {

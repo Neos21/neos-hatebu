@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import * as md5 from 'md5';
 
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 
 import { appConstants } from '../constants/app-constants';
 import { CategoriesService } from './categories.service';

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import * as moment from 'moment-timezone';
+import { environment } from '../../../environments/environment';
 
+import { NgData } from '../classes/ng-data';
 import { NgUrl } from '../classes/ng-url';
 import { NgWord } from '../classes/ng-word';
 import { NgDomain } from '../classes/ng-domain';
-import { environment } from '../../../environments/environment.prod';
-import { NgData } from '../classes/ng-data';
 
 /**
  * NG 情報を扱うサービス

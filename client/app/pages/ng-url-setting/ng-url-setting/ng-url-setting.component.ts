@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment-timezone';
 
 import { NgDataService } from '../../../shared/services/ng-data.service';
-import { NgUrl } from '../../../shared/classes/ng-url';
 import { PageDataService } from '../../../shared/services/page-data.service';
+import { NgUrl } from '../../../shared/classes/ng-url';
 
 /**
  * NG URL Setting Component
@@ -68,6 +68,8 @@ export class NgUrlSettingComponent implements OnInit {
    * 指定の日付以前の NG URL を削除する
    */
   public onRemoveNgUrls(): void {
+    this.message = '';
+    
     this.ngDataService.removeNgUrls(this.removeForm.value.date)
       .then((ngUrls) => {
         // キャッシュを使わず再取得したものを設定する

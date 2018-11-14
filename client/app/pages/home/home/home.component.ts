@@ -4,9 +4,9 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import * as moment from 'moment-timezone';
 
 import { CategoriesService } from '../../../shared/services/categories.service';
-import { Category } from '../../../shared/classes/category';
 import { NgDataService } from '../../../shared/services/ng-data.service';
 import { PageDataService } from '../../../shared/services/page-data.service';
+import { Category } from '../../../shared/classes/category';
 import { NgUrl } from '../../../shared/classes/ng-url';
 
 /**

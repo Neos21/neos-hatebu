@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { LoginService } from '../../../shared/services/login.service';
 import { appConstants } from '../../../shared/constants/app-constants';
 import { AuthGuard } from '../../../shared/guards/auth.guard';
+import { LoginService } from '../../../shared/services/login.service';
 import { PageDataService } from '../../../shared/services/page-data.service';
 
 /**
