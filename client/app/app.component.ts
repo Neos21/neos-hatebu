@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, HostListener } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -22,6 +22,9 @@ export class AppComponent implements OnInit {
   public isShownMenu: boolean = false;
   /** カテゴリ一覧 */
   public categories: Category[] = [];
+  
+  /** 最後に touchend イベントが発生した時の時間 (ダブルタップによるズーム禁止処理用) */
+  private lastTouchEnd: number = 0;
   
   /**
    * コンストラクタ
@@ -50,7 +53,7 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.toggleMenu(false);
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0);  // RouterModule.forRoot() に scrollPositionRestoration: 'enabled' を設定してみたが、何か動きがカクつくのでそちらは止めた
       }
     });
     
@@ -62,6 +65,39 @@ export class AppComponent implements OnInit {
     this.pageDataService.categories.subscribe((categories) => {
       this.categories = categories;
     });
+    
+    // ピンチズームを禁止する : @HostListener で passive: false 設定の仕方が分からなかったので直指定することにした
+    this.document.addEventListener('touchstart', (event) => {
+      if(event.touches && event.touches.length > 1) {
+        event.preventDefault();
+      }
+      
+      // 万が一ズームされていたら直す
+      if((event as any).scale && (event as any).scale !== 1) {
+        (event as any).scale = 1;
+      }
+    }, { passive: false });
+  }
+  
+  /**
+   * ダブルタップによるズームを禁止する
+   * 定数 delay で決めた間隔でのタップを無効化する
+   * 
+   * @param event TouchEvent
+   */
+  @HostListener('document:touchend', ['$event'])
+  public onTouchEnd(event: TouchEvent): void {
+    const delay = 700;  // ms
+    const now = new Date().getTime();
+    if((now - this.lastTouchEnd) < delay) {
+      event.preventDefault();
+    }
+    this.lastTouchEnd = now;
+    
+    // 万が一ズームされていたら直す
+    if((event as any).scale && (event as any).scale !== 1) {
+      (event as any).scale = 1;
+    }
   }
   
   /**

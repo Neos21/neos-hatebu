@@ -52,17 +52,58 @@ export class HomeComponent implements OnInit {
   }
   
   /**
-   * カテゴリ別の記事一覧を取得する
+   * 選択した記事を NG URL に追加して削除する
+   * 
+   * @param url 削除する記事の URL
+   */
+  public onRemoveEntry(url: string): void {
+    // 見た目のレスポンスを良くするため、キャッシュにはこの場でデータを作って追加する (id, userId は未入力)
+    const ngUrl = new NgUrl();
+    ngUrl.url = url;
+    ngUrl.createdAt = moment.utc().toISOString();
+    this.ngDataService.ngUrls.push(ngUrl);
+    
+    // この場で削除する記事を省いておく (onShowCategory() で処理すると重たいため)
+    this.currentCategory.entries = this.currentCategory.entries.filter((entry) => {
+      return entry.url !== url;
+    });
+    
+    // 記事を削除するための API を叩く
+    this.ngDataService.addNgUrl(url);
+  }
+  
+  /**
+   * 指定のカテゴリ ID を再スクレイピングして表示する
    * 
    * @param categoryId カテゴリ ID
    */
-  public onShowCategory(categoryId: string | number): void {
-    // ココでリセットしておけば全てのイベントに対応できる
+  public onReloadEntries(categoryId: string|number): void {
     this.currentCategory = null;
     this.isLoading = true;
     this.errorMessage = '';
     
-    this.categoriesService.findAll()
+    this.categoriesService.reloadById(categoryId)
+      .then(() => {
+        // 再スクレイピング成功・再表示することでフィルタ表示する
+        return this.onShowCategory(categoryId);
+      })
+      .catch((error) => {
+        this.isLoading = false;
+        this.errorMessage = `再スクレイピング失敗 : ${JSON.stringify(error)}`;
+      });
+  }
+  
+  /**
+   * カテゴリ別の記事一覧を取得する
+   * 
+   * @param categoryId カテゴリ ID
+   */
+  private onShowCategory(categoryId: string | number): Promise<any> {
+    this.currentCategory = null;
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    return this.categoriesService.findAll()
       .then((categories) => {
         const currentCategory = categories.find((category) => {
           return `${category.id}` === `${categoryId}`;
@@ -113,43 +154,6 @@ export class HomeComponent implements OnInit {
       .catch((error) => {
         this.isLoading = false;
         this.errorMessage = `指定のカテゴリのエントリ取得 : 失敗 : ${JSON.stringify(error)}`;
-      });
-  }
-  
-  /**
-   * 選択した記事を NG URL に追加して削除する
-   * 
-   * @param url 削除する記事の URL
-   */
-  public onRemoveEntry(url: string): void {
-    // 見た目のレスポンスを良くするため、キャッシュにはこの場でデータを作って追加する (id, userId は未入力)
-    const ngUrl = new NgUrl();
-    ngUrl.url = url;
-    ngUrl.createdAt = moment.utc().toISOString();
-    this.ngDataService.ngUrls.push(ngUrl);
-    
-    // この場で削除する記事を省いておく (onShowCategory() で処理すると重たいため)
-    this.currentCategory.entries = this.currentCategory.entries.filter((entry) => {
-      return entry.url !== url;
-    });
-    
-    // 記事を削除するための API を叩く
-    this.ngDataService.addNgUrl(url);
-  }
-  
-  /**
-   * 指定のカテゴリ ID を再スクレイピングして表示する
-   * 
-   * @param categoryId カテゴリ ID
-   */
-  public onReloadEntries(categoryId: string|number): void {
-    this.categoriesService.reloadById(categoryId)
-      .then(() => {
-        // 再スクレイピング成功・再表示することでフィルタ表示する
-        this.onShowCategory(categoryId);
-      })
-      .catch((error) => {
-        this.errorMessage = `再スクレイピング失敗 : ${JSON.stringify(error)}`;
       });
   }
 }

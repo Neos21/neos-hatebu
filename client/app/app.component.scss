@@ -128,6 +128,7 @@ a {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, .3);
   transition: left $menu-transition;
   z-index: 99999;  // .header よりも上
+  -webkit-touch-callout: none;  // iOS で長押ししてもポップアップメニューを開かせない
   
   // iOS でスクロールしなかったので子要素でスクロールさせる
   div {
@@ -140,7 +141,7 @@ a {
     margin: .5rem 0 60px;
     padding: 0;
     list-style: none;
-    color: $theme-colour;
+    color: darken($theme-colour, 7.5%);
     
     ul {
       margin: 0 0 .25rem;
@@ -150,16 +151,18 @@ a {
     a {
       display: block;
       padding: .05rem .75rem;
+      color: darken($theme-colour, 7.5%);
+      
+      &.active,
+      &:hover {
+        color: $theme-colour;
+        text-shadow: rgba(255, 255, 255, .75) 0 0 16px;
+      }
     }
     
     span {
       display: block;
       padding: 0 1rem;
-    }
-    
-    .active a,
-    a:hover {
-      color: darken($theme-colour, 10%);
     }
   }
 }
