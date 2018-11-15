@@ -13,7 +13,7 @@ const pool = new pg.Pool({
 
 Promise.resolve()
   .then(() => {
-    console.log(`管理ユーザ登録 : ${process.env.CLIENT_ADMIN_PASSWORD}`);
+    console.log('管理ユーザ登録');
     return pool.query(`INSERT INTO users ( id, user_name, password ) VALUES ( 1, 'ユーザ名', 'パスワードの MD5 ハッシュ' )`);
   })
   .then ((result) => {
