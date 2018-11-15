@@ -27,7 +27,7 @@
           <a [href]="entry.url" target="_blank"><img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl"></a>
         </div>
         <div class="remove">
-          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)">削除する</button>
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)" (touchend)="onRemoveEntry(entry.url)">削除する</button>
         </div>
       </div>
       <div class="entry-meta">
