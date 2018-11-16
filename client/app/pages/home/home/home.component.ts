@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import * as moment from 'moment-timezone';
@@ -40,6 +40,23 @@ export class HomeComponent implements OnInit {
     private ngDataService: NgDataService
   ) { }
   
+  @HostListener('touchend', ['$event'])
+  public onTouchEnd(event: TouchEvent): void {
+    if(event.target) {
+      if((event.target as any).id === 'btn-reload') {
+        console.log('リロードボタンは無視');
+        return;
+      }
+      if((event as any).path.some((path) => {
+        return `${path.tagName}`.toLowerCase() === 'a';
+      })) {
+        console.log('リンクが含まれるので無視');
+        return;
+    }
+    console.log('コンポ TouchEnd 抑止', event);
+    event.preventDefault();
+  }
+  
   /**
    * 画面初期表示時の処理
    */
@@ -56,7 +73,8 @@ export class HomeComponent implements OnInit {
    * 
    * @param url 削除する記事の URL
    */
-  public onRemoveEntry(url: string): void {
+  public onRemoveEntry(url: string, event: Event): void {
+    console.log('削除', event.type, event);
     // 見た目のレスポンスを良くするため、キャッシュにはこの場でデータを作って追加する (id, userId は未入力)
     const ngUrl = new NgUrl();
     ngUrl.url = url;

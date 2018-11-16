@@ -4,7 +4,7 @@
 
 <ng-container *ngIf="!isLoading && currentCategory">
   <div class="clearfix mb-2">
-    <div class="float-right"><button type="button" class="btn btn-sm btn-outline-primary" (click)="onReloadEntries(currentCategory.id)">更新</button></div>
+    <div class="float-right"><button type="button" id="btn-reload" class="btn btn-sm btn-outline-primary" (click)="onReloadEntries(currentCategory.id)">更新</button></div>
     <div><span class="entries-count">{{ currentCategory.entries.length }}</span> 件 ({{ currentCategory.updatedAt }} クロール)</div>
   </div>
   
@@ -27,7 +27,7 @@
           <a [href]="entry.url" target="_blank"><img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl"></a>
         </div>
         <div class="remove">
-          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)">削除する</button>
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url, $event)" (touchend)="onRemoveEntry(entry.url, $event)">削除する</button>
         </div>
       </div>
       <div class="entry-meta">
