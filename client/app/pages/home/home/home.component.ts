@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
       })) {
         console.log('リンクが含まれるので無視');
         return;
+      }
     }
     console.log('コンポ TouchEnd 抑止', event);
     event.preventDefault();
