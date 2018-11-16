@@ -65,13 +65,6 @@ export class AppComponent implements OnInit {
     this.pageDataService.categories.subscribe((categories) => {
       this.categories = categories;
     });
-    
-    // ピンチズームを禁止する : @HostListener で passive: false 設定の仕方が分からなかったので直指定することにした
-    this.document.addEventListener('touchstart', (event) => {
-      if(event.touches && event.touches.length > 1) {
-        event.preventDefault();
-      }
-    }, { passive: false });
   }
   
   /**
