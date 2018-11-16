@@ -69,11 +69,14 @@ export class AppComponent implements OnInit {
     // ピンチズームを禁止する : @HostListener で passive: false 設定の仕方が分からなかったので直指定することにした
     this.document.addEventListener('touchstart', (event) => {
       if(event.touches && event.touches.length > 1) {
+        console.log('TouchStart ピンチ禁止', event);
         event.preventDefault();
       }
       
       // 万が一ズームされていたら直す
       if((event as any).scale && (event as any).scale !== 1) {
+        console.log('TouchStart Scale 修正', event);
+        event.preventDefault();
         (event as any).scale = 1;
       }
     }, { passive: false });
@@ -90,12 +93,15 @@ export class AppComponent implements OnInit {
     const delay = 350;  // ms
     const now = new Date().getTime();
     if((now - this.lastTouchEnd) < delay) {
+      console.log('TouchEnd ダブルタップ禁止', event);
       event.preventDefault();
     }
     this.lastTouchEnd = now;
     
     // 万が一ズームされていたら直す
     if((event as any).scale && (event as any).scale !== 1) {
+      console.log('TouchEnd Scale 修正', event);
+      event.preventDefault();
       (event as any).scale = 1;
     }
   }
