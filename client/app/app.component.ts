@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
    */
   @HostListener('document:touchend', ['$event'])
   public onTouchEnd(event: TouchEvent): void {
-    const delay = 400;  // ms
+    const delay = 450;  // ms
     const now = new Date().getTime();
     if((now - this.lastTouchEnd) < delay) {
       event.preventDefault();
