@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2, HostListener } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -65,22 +65,6 @@ export class AppComponent implements OnInit {
     this.pageDataService.categories.subscribe((categories) => {
       this.categories = categories;
     });
-  }
-  
-  /**
-   * ダブルタップによるズームを禁止する
-   * 定数 delay で決めた間隔でのタップを無効化する
-   * 
-   * @param event TouchEvent
-   */
-  @HostListener('document:touchend', ['$event'])
-  public onTouchEnd(event: TouchEvent): void {
-    const delay = 450;  // ms
-    const now = new Date().getTime();
-    if((now - this.lastTouchEnd) < delay) {
-      event.preventDefault();
-    }
-    this.lastTouchEnd = now;
   }
   
   /**

@@ -41,6 +41,7 @@ html {
   height: 100%;
   overflow-y: scroll;  // 縦スクロールバーを常に表示する
   overflow-x: hidden;
+  touch-action: manipulation;  // ダブルタップによるズームなどを防ぐ (iOS は auto と manipulation しか対応していない)
   -webkit-overflow-scrolling: touch;  // スマホ向け慣性スクロール
 }
 
