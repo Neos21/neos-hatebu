@@ -148,13 +148,16 @@ a {
       padding-left: 1rem;
     }
     
-    a {
+    button {
       display: block;
+      width: 100%;
+      border: 0;
       padding: .05rem .75rem;
       color: darken($theme-colour, 12.5%);
-              user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
+      text-align: left;
+      background: transparent;
+      cursor: pointer;
+      outline: 0;
       
       &.active,
       &:hover {
