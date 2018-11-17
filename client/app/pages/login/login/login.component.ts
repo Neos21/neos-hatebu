@@ -73,7 +73,11 @@ export class LoginComponent implements OnInit {
       .then(() => {
         // 成功・二重にログイン処理がされないようガードを設定しておく (LoginService 内でやろうとすると AuthGuard と循環依存するためココで行う)
         this.authGuard.isLogined = true;
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home'], {
+          queryParams: {
+            categoryId: '1'
+          }
+        });
       })
       .catch((error) => {
         console.warn('ログイン失敗', error);

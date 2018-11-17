@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import * as moment from 'moment-timezone';
 
@@ -28,12 +28,14 @@ export class HomeComponent implements OnInit {
   /**
    * コンストラクタ
    * 
+   * @param router Router
    * @param activatedRoute ActivatedRoute
    * @param pageDataService PageDataService
    * @param categoriesService CategoriesService
    * @param ngDataService NgDataService
    */
   constructor(
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private pageDataService: PageDataService,
     private categoriesService: CategoriesService,
@@ -45,7 +47,16 @@ export class HomeComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
-      // クエリパラメータなしの場合もこの関数に辿り着くので null の場合は 1 をデフォルト表示にする
+      // クエリパラメータがない場合は 1 にリダイレクトする
+      if(params.get('categoryId') === null || params.get('categoryId') === undefined) {
+        this.router.navigate(['/home'], {
+          queryParams: {
+            categoryId: '1'
+          }
+        });
+        return;
+      }
+      
       const categoryId = params.get('categoryId') || '1';
       this.onShowCategory(categoryId);
     });
