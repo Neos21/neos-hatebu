@@ -6,20 +6,24 @@
   </p>
 </form>
 
-<p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
+<p *ngIf="isLoading" class="text-info font-weight-bold">読込中…</p>
 
-<p *ngIf="ngUrls && ngUrls.length">
-  <span class="count">全 {{ ngUrls.length }} 件</span>
-  <button type="button" class="btn btn-primary" (click)="onToggleShow()">{{ isShownAll ? '省略' : '全件' }}表示</button>
-</p>
+<p *ngIf="!isLoading && message" class="text-danger font-weight-bold">{{ message }}</p>
 
-<ol *ngIf="ngUrls && ngUrls.length">
-  <li *ngFor="let ngUrl of ngUrls">
-    <div>
-      <span class="date">{{ ngUrl.createdAt }}</span>
-      <span class="url"><a [href]="ngUrl.url" target="_blank">{{ ngUrl.url }}</a></span>
-    </div>
-  </li>
-</ol>
+<ng-container *ngIf="!isLoading && ngUrls && ngUrls.length">
+  <p>
+    <span class="count">全 {{ ngUrls.length }} 件</span>
+    <button type="button" class="btn btn-primary" (click)="onToggleShow()">{{ isShownAll ? '省略' : '全件' }}表示</button>
+  </p>
+  
+  <ol>
+    <li *ngFor="let ngUrl of ngUrls">
+      <div>
+        <span class="date">{{ ngUrl.createdAt }}</span>
+        <span class="url"><a [href]="ngUrl.url" target="_blank">{{ ngUrl.url }}</a></span>
+      </div>
+    </li>
+  </ol>
+</ng-container>
 
-<p *ngIf="!ngUrls || !ngUrls.length" class="text-warning font-weight-bold">NG URL は登録されていません。</p>
+<p *ngIf="!isLoading && !message && (!ngUrls || !ngUrls.length)" class="text-warning font-weight-bold">NG URL は登録されていません。</p>

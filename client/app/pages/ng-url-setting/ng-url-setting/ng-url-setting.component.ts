@@ -16,6 +16,8 @@ import { NgUrl } from '../../../shared/classes/ng-url';
   styleUrls: ['./ng-url-setting.component.scss']
 })
 export class NgUrlSettingComponent implements OnInit {
+  /** 読込中のフィードバックメッセージ */
+  public isLoading: boolean = true;
   /** 削除する日付の設定フォーム */
   public removeForm: FormGroup;
   /** NG URL 一覧 */
@@ -54,6 +56,7 @@ export class NgUrlSettingComponent implements OnInit {
     // NG URL 一覧を強制再取得し画面に設定する
     this.ngDataService.findNgUrls(true)
       .then((ngUrls) => {
+        this.isLoading = false;
         this.ngUrls = ngUrls
           .slice(0, 50)  // 初期表示時は50件のみ省略表示する
           .map((ngUrl) => {
@@ -63,6 +66,7 @@ export class NgUrlSettingComponent implements OnInit {
           });
       })
       .catch((error) => {
+        this.isLoading = false;
         console.error('NG URL 一覧取得 : 失敗', error);
         this.message = `NG URL 一覧取得に失敗 : ${JSON.stringify(error)}`;
       });
@@ -72,6 +76,8 @@ export class NgUrlSettingComponent implements OnInit {
    * 全件表示と省略表示を切り替える
    */
   public onToggleShow(): void {
+    this.message = '';
+    
     // キャッシュがあればキャッシュから全件表示する
     this.ngDataService.findNgUrls()
       .then((ngUrlsResult) => {
