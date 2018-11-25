@@ -2,6 +2,12 @@
 @import '~bootstrap/scss/_mixins';
 @import '~bootstrap/scss/_variables';
 
+.input-date,
+.count {
+  display: inline-block;
+  width: 13rem;
+}
+
 li > div {
   display: inline-grid;
   grid-template-columns: auto auto;

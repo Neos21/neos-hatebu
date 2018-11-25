@@ -90,6 +90,11 @@ a {
     font-weight: bold;
     text-align: center;
     line-height: $header-height;
+    transition: padding-left $menu-transition;
+    
+    @include media-breakpoint-up(lg) {
+      padding-left: $menu-width;
+    }
   }
   
   .site-title {

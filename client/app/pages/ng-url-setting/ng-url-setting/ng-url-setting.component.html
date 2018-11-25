@@ -1,6 +1,6 @@
 <form [formGroup]="removeForm" class="form-inline" (ngSubmit)="onRemoveNgUrls()">
   <p>
-    <input type="date" formControlName="date" class="form-control d-inline w-auto">
+    <input type="date" formControlName="date" class="form-control input-date">
     以前を
     <button type="submit" class="btn btn-danger" [disabled]="removeForm.invalid">削除</button>
   </p>
@@ -8,7 +8,10 @@
 
 <p *ngIf="message" class="text-danger font-weight-bold">{{ message }}</p>
 
-<p *ngIf="ngUrls && ngUrls.length">全 {{ ngUrls.length }} 件</p>
+<p *ngIf="ngUrls && ngUrls.length">
+  <span class="count">全 {{ ngUrls.length }} 件</span>
+  <button type="button" class="btn btn-primary" (click)="onToggleShow()">{{ isShownAll ? '省略' : '全件' }}表示</button>
+</p>
 
 <ol *ngIf="ngUrls && ngUrls.length">
   <li *ngFor="let ngUrl of ngUrls">

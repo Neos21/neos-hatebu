@@ -22,6 +22,8 @@ export class NgUrlSettingComponent implements OnInit {
   public ngUrls: NgUrl[] = [];
   /** フィードバックメッセージ */
   public message: string = '';
+  /** 全件表示中か否か (true で全件表示・false で50件に省略表示) */
+  public isShownAll: boolean = false;
   
   /**
    * コンストラクタ
@@ -49,14 +51,47 @@ export class NgUrlSettingComponent implements OnInit {
       date: [defaultValue, [Validators.required]]
     });
     
-    // NG URL 一覧を取得し画面に設定する
-    this.ngDataService.findNgUrls()
+    // NG URL 一覧を強制再取得し画面に設定する
+    this.ngDataService.findNgUrls(true)
       .then((ngUrls) => {
-        this.ngUrls = ngUrls.map((ngUrl) => {
+        this.ngUrls = ngUrls
+          .slice(0, 50)  // 初期表示時は50件のみ省略表示する
+          .map((ngUrl) => {
+            // 日時を整形する
+            ngUrl.createdAt = moment(ngUrl.createdAt).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
+            return ngUrl;
+          });
+      })
+      .catch((error) => {
+        console.error('NG URL 一覧取得 : 失敗', error);
+        this.message = `NG URL 一覧取得に失敗 : ${JSON.stringify(error)}`;
+      });
+  }
+  
+  /**
+   * 全件表示と省略表示を切り替える
+   */
+  public onToggleShow(): void {
+    // キャッシュがあればキャッシュから全件表示する
+    this.ngDataService.findNgUrls()
+      .then((ngUrlsResult) => {
+        // 全件表示と省略表示をトグルする
+        this.isShownAll = !this.isShownAll;
+        
+        let ngUrls = ngUrlsResult;
+        
+        // 省略表示の時は50件のみ表示する
+        if(!this.isShownAll) {
+          ngUrls = ngUrls.slice(0, 50);
+        }
+        
+        ngUrls = ngUrls.map((ngUrl) => {
           // 日時を整形する
           ngUrl.createdAt = moment(ngUrl.createdAt).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
           return ngUrl;
         });
+        
+        this.ngUrls = ngUrls;
       })
       .catch((error) => {
         console.error('NG URL 一覧取得 : 失敗', error);

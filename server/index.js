@@ -59,8 +59,7 @@ require('./routes/func-init-passport')();
 app.use('/', require('./routes/router'));
 
 // サーバ起動
-const server = app.listen(process.env.PORT || 8080, () => {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log(`Neo's Hatebu : Listening at https://${host}:${port}`);
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Neo's Hatebu : ${port}`);
 });
