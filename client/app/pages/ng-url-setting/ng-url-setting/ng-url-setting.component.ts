@@ -24,7 +24,7 @@ export class NgUrlSettingComponent implements OnInit {
   public ngUrls: NgUrl[] = [];
   /** フィードバックメッセージ */
   public message: string = '';
-  /** 全件表示中か否か (true で全件表示・false で50件に省略表示) */
+  /** 全件表示中か否か (true で全件表示・false で省略表示) */
   public isShownAll: boolean = false;
   
   /**
@@ -57,13 +57,7 @@ export class NgUrlSettingComponent implements OnInit {
     this.ngDataService.findNgUrls(true)
       .then((ngUrls) => {
         this.isLoading = false;
-        this.ngUrls = ngUrls
-          .slice(0, 50)  // 初期表示時は50件のみ省略表示する
-          .map((ngUrl) => {
-            // 日時を整形する
-            ngUrl.createdAt = moment(ngUrl.createdAt).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
-            return ngUrl;
-          });
+        this.ngUrls = this.convertNgUrls(ngUrls, true);
       })
       .catch((error) => {
         this.isLoading = false;
@@ -80,24 +74,10 @@ export class NgUrlSettingComponent implements OnInit {
     
     // キャッシュがあればキャッシュから全件表示する
     this.ngDataService.findNgUrls()
-      .then((ngUrlsResult) => {
+      .then((ngUrls) => {
         // 全件表示と省略表示をトグルする
         this.isShownAll = !this.isShownAll;
-        
-        let ngUrls = ngUrlsResult;
-        
-        // 省略表示の時は50件のみ表示する
-        if(!this.isShownAll) {
-          ngUrls = ngUrls.slice(0, 50);
-        }
-        
-        ngUrls = ngUrls.map((ngUrl) => {
-          // 日時を整形する
-          ngUrl.createdAt = moment(ngUrl.createdAt).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
-          return ngUrl;
-        });
-        
-        this.ngUrls = ngUrls;
+        this.ngUrls = this.convertNgUrls(ngUrls, this.isShownAll);
       })
       .catch((error) => {
         console.error('NG URL 一覧取得 : 失敗', error);
@@ -113,16 +93,30 @@ export class NgUrlSettingComponent implements OnInit {
     
     this.ngDataService.removeNgUrls(this.removeForm.value.date)
       .then((ngUrls) => {
-        // キャッシュを使わず再取得したものを設定する
-        this.ngUrls = ngUrls.map((ngUrl) => {
-          // 日時を整形する
-          ngUrl.createdAt = moment(ngUrl.createdAt).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
-          return ngUrl;
-        });
+        // 強制再取得したものを設定する・省略表示か否かのフラグは参照のみ
+        this.ngUrls = this.convertNgUrls(ngUrls, this.isShownAll);
       })
       .catch((error) => {
         console.error('NG URL 削除 : 失敗', error);
         this.message = `NG URL 削除に失敗 : ${JSON.stringify(error)}`;
       });
+  }
+  
+  /**
+   * NG URL 一覧を、条件に応じて省略し、日付を変換して返す
+   * 
+   * @param ngUrls NG URL 一覧
+   * @param isSlice 50件に絞る場合は true
+   * @return NG URL 一覧
+   */
+  private convertNgUrls(ngUrls: NgUrl[], isSlice: boolean): NgUrl[] {
+    if(isSlice) {
+      ngUrls = ngUrls.slice(0, 50);
+    }
+    
+    return ngUrls.map((ngUrl) => {
+      ngUrl.createdAt = moment(ngUrl.createdAt).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
+      return ngUrl;
+    });
   }
 }
