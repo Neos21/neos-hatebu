@@ -9,7 +9,7 @@
 $theme-bg-colour: #008fde;
 $theme-colour: #fff;
 
-$header-height: 50px;
+$header-height: 55px;
 $menu-width: 270px;
 
 $menu-transition: .2s;
@@ -48,7 +48,7 @@ a {
     top: 0;
     left: 0;
     height: $header-height;
-    padding: 0 1rem;
+    padding: 0 1.5rem 0 1rem;
     border: 0;
     background: $theme-bg-colour;
     overflow: hidden;
