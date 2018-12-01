@@ -106,11 +106,12 @@ export class NgUrlSettingComponent implements OnInit {
    * NG URL 一覧を、条件に応じて省略し、日付を変換して返す
    * 
    * @param ngUrls NG URL 一覧
-   * @param isSlice 50件に絞る場合は true
+   * @param isShownAll 50件に絞る場合は false
    * @return NG URL 一覧
    */
-  private convertNgUrls(ngUrls: NgUrl[], isSlice: boolean): NgUrl[] {
-    if(isSlice) {
+  private convertNgUrls(ngUrls: NgUrl[], isShownAll: boolean): NgUrl[] {
+    if(!isShownAll) {
+      // tslint:disable-next-line:no-parameter-reassignment
       ngUrls = ngUrls.slice(0, 50);
     }
     
