@@ -57,7 +57,7 @@ export class NgUrlSettingComponent implements OnInit {
     this.ngDataService.findNgUrls(true)
       .then((ngUrls) => {
         this.isLoading = false;
-        this.ngUrls = this.convertNgUrls(ngUrls, true);
+        this.ngUrls = this.convertNgUrls(ngUrls, this.isShownAll);
       })
       .catch((error) => {
         this.isLoading = false;
