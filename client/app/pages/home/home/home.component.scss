@@ -2,6 +2,8 @@
 @import '~bootstrap/scss/_mixins';
 @import '~bootstrap/scss/_variables';
 
+$thumbnail-width: 110px;
+
 .entries-count {
   display: inline-block;
   width: 2.5rem;
@@ -10,7 +12,7 @@
 
 .entry-container {
   display: grid;
-  grid-template-columns: 16px 4px 1fr 4px 100px;
+  grid-template-columns: 16px 4px 1fr 4px $thumbnail-width;
   padding: .75rem 0;
   border-bottom: 1px solid #e5e8e9;
   
@@ -76,18 +78,18 @@
   grid-column: 5;
   
   .thumbnail {
-    width: 100px;
-    height: 100px;
+    width: $thumbnail-width;
+    height: 90px;
     background: #e5e8e9;
     
     img {
-      width: 100px;
-      height: 100px;
+      width: $thumbnail-width;
+      height: 90px;
     }
   }
   
   .remove {
-    margin-top: .75rem;
+    margin-top: .7rem;
   }
 }
 
