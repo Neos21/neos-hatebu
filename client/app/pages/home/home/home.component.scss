@@ -10,7 +10,7 @@
 
 .entry-container {
   display: grid;
-  grid-template-columns: 16px 4px 1fr 4px 88px;
+  grid-template-columns: 16px 4px 1fr 4px 100px;
   padding: .75rem 0;
   border-bottom: 1px solid #e5e8e9;
   
@@ -58,7 +58,6 @@
   .description {
     color: $gray-600;
     
-    
     // 3行で省略表示する
     @include media-breakpoint-down(sm) {
       display: -webkit-box;
@@ -77,18 +76,18 @@
   grid-column: 5;
   
   .thumbnail {
-    width: 88px;
-    height: 88px;
+    width: 100px;
+    height: 100px;
     background: #e5e8e9;
     
     img {
-      width: 88px;
-      height: 88px;
+      width: 100px;
+      height: 100px;
     }
   }
   
   .remove {
-    margin-top: 1.1rem;
+    margin-top: .75rem;
   }
 }
 
