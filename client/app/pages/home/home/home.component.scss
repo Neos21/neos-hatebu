@@ -12,7 +12,7 @@ $thumbnail-width: 110px;
 
 .entry-container {
   display: grid;
-  grid-template-columns: 16px 4px 1fr 4px $thumbnail-width;
+  grid-template-columns: 16px 4px $thumbnail-width 4px 1fr;
   padding: .75rem 0;
   border-bottom: 1px solid #e5e8e9;
   
@@ -38,7 +38,7 @@ $thumbnail-width: 110px;
 
 .entry-info {  // a 要素
   grid-row: 1;
-  grid-column: 3;
+  grid-column: 5;
   text-decoration: none;
   
   .title {
@@ -75,7 +75,7 @@ $thumbnail-width: 110px;
 
 .entry-side {
   grid-row: 1 / 3;
-  grid-column: 5;
+  grid-column: 3;
   
   .thumbnail {
     width: $thumbnail-width;
@@ -89,13 +89,18 @@ $thumbnail-width: 110px;
   }
   
   .remove {
-    margin-top: .7rem;
+    margin-top: .25rem;
+    
+    .btn {
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+    }
   }
 }
 
 .entry-meta {
   grid-row: 2;
-  grid-column: 3 / 4;
+  grid-column: 5;
   align-self: end;  // 下揃えにする
   padding-top: 4px;
   font-size: .9rem;

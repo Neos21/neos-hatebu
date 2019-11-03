@@ -81,6 +81,14 @@ export class HomeComponent implements OnInit {
     
     // 記事を削除するための API を叩く
     this.ngDataService.addNgUrl(url);
+    
+    // ボタンからフォーカスを外す
+    try {
+      (window.document.activeElement as any).blur();
+    }
+    catch(error) {
+      console.warn('activeElement.blur() に失敗');
+    }
   }
   
   /**

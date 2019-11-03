@@ -24,7 +24,7 @@
       </a>
       <div class="entry-side">
         <div class="thumbnail">
-          <a [href]="entry.url" target="_blank"><img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl"></a>
+          <img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl">
         </div>
         <div class="remove">
           <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)">削除する</button>
