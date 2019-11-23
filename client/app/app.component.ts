@@ -23,8 +23,8 @@ export class AppComponent implements OnInit {
   /** カテゴリ一覧 */
   public categories: Category[] = [];
   
-  /** 最後に touchend イベントが発生した時の時間 (ダブルタップによるズーム禁止処理用) */
-  private lastTouchEnd: number = 0;
+  /** 左利きモードか否か (true:左利きモード Default・false:右利きモード) */
+  private isLeftHandMode: boolean = true;
   
   /**
    * コンストラクタ
@@ -85,6 +85,14 @@ export class AppComponent implements OnInit {
     // 引数が指定されていれば引数に従って操作、そうでなければ現在の状態を反転させる
     this.isShownMenu = typeof isShown !== 'undefined' ? isShown : !this.isShownMenu;
     this.renderer2[this.isShownMenu ? 'addClass' : 'removeClass'](this.document.body, 'show-menu');
+  }
+  
+  /**
+   * 利き手モードを切り替える
+   */
+  public toggleHand(): void {
+    this.isLeftHandMode = !this.isLeftHandMode;
+    this.renderer2[this.isLeftHandMode ? 'removeClass' : 'addClass'](this.document.body, 'right-hand-mode');
   }
   
   /**

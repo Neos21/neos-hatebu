@@ -65,6 +65,13 @@ a {
       }
     }
     
+    // 右利きモード
+    :host-context(.right-hand-mode) & {
+      left: auto;
+      right: 0;
+      padding: 0 1rem 0 1.5rem;
+    }
+    
     &:hover {
       .icon-bar {
         background: darken($theme-colour, 10%);
@@ -95,6 +102,18 @@ a {
     @include media-breakpoint-up(lg) {
       padding-left: $menu-width;
     }
+    
+    span {
+      display: inline-block;
+      height: 100%;
+      padding: 0 1rem;
+      cursor: pointer;
+      
+      &:hover {
+        color: darken($theme-colour, 10%);
+      }
+    }
+    
   }
   
   .site-title {
@@ -103,6 +122,7 @@ a {
     right: 0;
     border: 0;
     padding-right: .75rem;
+    padding-left: .75rem;
     color: $theme-colour;
     text-align: right;
     font-size: .9rem;
@@ -112,6 +132,13 @@ a {
     transform: translateY(-50%);
     outline: 0;
     cursor: pointer;
+    
+    // 右利きモード
+    :host-context(.right-hand-mode) & {
+      left: 0;
+      right: auto;
+      text-align: left;
+    }
     
     &:hover {
       color: darken($theme-colour, 10%);
