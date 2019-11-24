@@ -97,10 +97,18 @@ a {
     font-weight: bold;
     text-align: center;
     line-height: $header-height;
-    transition: padding-left $menu-transition;
+    transition: padding-right $menu-transition padding-left $menu-transition;
     
     @include media-breakpoint-up(lg) {
       padding-left: $menu-width;
+    }
+    
+    // 右利きモード
+    :host-context(.right-hand-mode) & {
+      @include media-breakpoint-up(lg) {
+        padding-left: 0;
+        padding-right: $menu-width;
+      }
     }
     
     span {
@@ -162,6 +170,32 @@ a {
   z-index: 99999;  // .header よりも上
   -webkit-touch-callout: none;  // iOS で長押ししてもポップアップメニューを開かせない
   
+  // ハンバーガメニューが表示される時はメニューを閉じておく
+  @include media-breakpoint-up(lg) {
+    left: 0;
+  }
+  
+  // 本コンポーネントより親の要素 (body 要素) に .show-menu が付与された時にメニューを表示するようにする
+  :host-context(.show-menu) & {
+    left: 0;
+  }
+  
+  // 右利きモード
+  :host-context(.right-hand-mode) & {
+    left: auto;
+    right: calc(-#{$menu-width} - 10px);
+    transition: right $menu-transition;
+    
+    @include media-breakpoint-up(lg) {
+      right: 0;
+    }
+  }
+  
+  :host-context(.show-menu.right-hand-mode) & {
+    left: auto;
+    right: 0;
+  }
+  
   // iOS でスクロールしなかったので子要素でスクロールさせる
   div {
     height: 100%;
@@ -206,18 +240,6 @@ a {
   }
 }
 
-// ハンバーガメニューが表示される時はメニューを閉じておく
-@include media-breakpoint-up(lg) {
-  .menu {
-    left: 0;
-  }
-}
-
-// 本コンポーネントより親の要素 (body 要素) に .show-menu が付与された時にメニューを表示するようにする
-:host-context(.show-menu) .menu {
-  left: 0;
-}
-
 // メニュー背景に置く閉じるための半透明背景ボタン
 .menu-bg {
   display: none;
@@ -225,24 +247,24 @@ a {
   span {
     visibility: hidden;
   }
-}
-
-:host-context(.show-menu) .menu-bg {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, .5);
-  z-index: 99990;  // .menu より下・.header より上
-  outline: 0;
-  cursor: pointer;
   
-  // 画面幅が広い場合は表示させない
-  @include media-breakpoint-up(lg) {
-    display: none;
+  :host-context(.show-menu) & {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    z-index: 99990;  // .menu より下・.header より上
+    outline: 0;
+    cursor: pointer;
+    
+    // 画面幅が広い場合は表示させない
+    @include media-breakpoint-up(lg) {
+      display: none;
+    }
   }
 }
 
@@ -261,5 +283,11 @@ a {
     margin-left: $menu-width;
     padding-right: 1rem;
     padding-left: 1rem;
+    
+    // 右利きモード
+    :host-context(.right-hand-mode) & {
+      margin-left: 0;
+      margin-right: $menu-width;
+    }
   }
 }

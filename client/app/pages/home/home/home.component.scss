@@ -4,10 +4,26 @@
 
 $thumbnail-width: 110px;
 
-.entries-count {
-  display: inline-block;
-  width: 2.5rem;
-  text-align: right;
+.reload {
+  float: right;
+  
+  // 右利きモード
+  :host-context(.right-hand-mode) & {
+    float: left;
+  }
+}
+
+.entries-info {
+  // 右利きモード
+  :host-context(.right-hand-mode) & {
+    text-align: right;
+  }
+  
+  .entries-count {
+    display: inline-block;
+    width: 2.5rem;
+    text-align: right;
+  }
 }
 
 .entry-container {
