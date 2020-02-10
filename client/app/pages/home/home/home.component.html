@@ -9,7 +9,7 @@
   </div>
   
   <ng-container *ngIf="currentCategory.entries && currentCategory.entries.length">
-    <div *ngFor="let entry of currentCategory.entries" class="entry-container">
+    <div *ngFor="let entry of currentCategory.entries; index as i" class="entry-container">
       <div class="favicon">
         <img [src]="entry.faviconUrl" *ngIf="entry.faviconUrl">
       </div>
@@ -27,7 +27,8 @@
           <img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl">
         </div>
         <div class="remove">
-          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)">削除する</button>
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)" *ngIf="i === 0" accesskey="d">削除する</button>
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)" *ngIf="i !== 0">削除する</button>
         </div>
       </div>
       <div class="entry-meta">
