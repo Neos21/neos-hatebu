@@ -47,17 +47,14 @@ export class HomeComponent implements OnInit {
    */
   public ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
-      // クエリパラメータがない場合は 1 にリダイレクトする
-      if(params.get('categoryId') === null || params.get('categoryId') === undefined) {
-        this.router.navigate(['/home'], {
-          queryParams: {
-            categoryId: '1'
-          }
-        });
+      const categoryId = params.get('categoryId');
+      
+      // クエリパラメータがない場合は最初のカテゴリにリダイレクトする
+      if(categoryId === null || categoryId === undefined) {
+        this.moveFirstCategory();
         return;
       }
       
-      const categoryId = params.get('categoryId') || '1';
       this.onShowCategory(categoryId);
     });
   }
@@ -109,6 +106,69 @@ export class HomeComponent implements OnInit {
       .catch((error) => {
         this.isLoading = false;
         this.errorMessage = `再スクレイピング失敗 : ${JSON.stringify(error)}`;
+      });
+  }
+  
+  /**
+   * 一つ前のカテゴリページに移動する
+   */
+  public onPrevCategory(): void {
+    this.categoriesService.findAll()
+      .then((categories) => {
+        // 現在のカテゴリの添字を拾う
+        const currentCategoryIndex = categories.findIndex((category) => {
+          return category.id === this.currentCategory.id;
+        });
+        
+        // 配列の一つ前のカテゴリを拾う
+        const prevCategory = categories[currentCategoryIndex - 1];
+        
+        // 一つ前のカテゴリがなければ、最後のカテゴリに移動する
+        if(!prevCategory) {
+          return this.router.navigate(['/home'], { queryParams: { categoryId: categories[categories.length - 1].id }});
+        }
+        
+        // 一つ前のカテゴリに移動する
+        return this.router.navigate(['/home'], { queryParams: { categoryId: prevCategory.id }});
+      });
+  }
+  
+  /**
+   * 一つ後のカテゴリページに移動する
+   */
+  public onNextCategory(): void {
+    this.categoriesService.findAll()
+      .then((categories) => {
+        // 現在のカテゴリの添字を拾う
+        const currentCategoryIndex = categories.findIndex((category) => {
+          return category.id === this.currentCategory.id;
+        });
+        
+        // 配列の一つ後のカテゴリを拾う
+        const nextCategory = categories[currentCategoryIndex + 1];
+        
+        // 一つ前のカテゴリがなければ、最初のカテゴリに移動する
+        if(!nextCategory) {
+          return this.router.navigate(['/home'], { queryParams: { categoryId: categories[0].id }});
+        }
+        
+        // 一つ後のカテゴリに移動する
+        return this.router.navigate(['/home'], { queryParams: { categoryId: nextCategory.id }});
+      });
+  }
+  
+  /**
+   * カテゴリ一覧のうち最初のカテゴリページに移動する
+   */
+  private moveFirstCategory(): void {
+    this.categoriesService.findAll()
+      .then((categories) => {
+        const firstCategory = categories[0];
+        return this.router.navigate(['/home'], {
+          queryParams: {
+            categoryId: firstCategory.id
+          }
+        });
       });
   }
   

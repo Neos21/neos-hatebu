@@ -39,4 +39,13 @@
   </ng-container>
   
   <p *ngIf="!currentCategory.entries || !currentCategory.entries.length" class="text-warning font-weight-bold">表示できるエントリはありません。</p>
+  
+  <div class="clearfix mt-4">
+    <div class="prev-category">
+      <button type="button" class="btn btn-outline-primary" (click)="onPrevCategory(currentCategory.id)">前へ</button>
+    </div>
+    <div class="next-category">
+      <button type="button" class="btn btn-outline-primary" (click)="onNextCategory(currentCategory.id)">次へ</button>
+    </div>
+  </div>
 </ng-container>

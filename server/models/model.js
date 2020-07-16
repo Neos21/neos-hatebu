@@ -1,3 +1,7 @@
+// ローカルから通信する際に SSL 通信を必須にする
+// const pg = require('pg');
+// pg.defaults.ssl = true;
+
 const Sequelize = require('sequelize');
 
 // 環境変数をロードする

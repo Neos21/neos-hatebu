@@ -59,7 +59,10 @@ export class AppComponent implements OnInit {
     
     // ページタイトルを受け取る
     this.pageDataService.pageTitle.subscribe((pageTitle) => {
-      this.pageTitle = pageTitle;
+      // ExpressionChangedAfterItHasBeenCheckedError を回避するため setTimeout() を使う : https://qiita.com/seteen/items/7dcfa82a96b8530fd131
+      setTimeout(() => {
+        this.pageTitle = pageTitle;
+      }, 0);
     });
     // カテゴリ一覧を受け取る
     this.pageDataService.categories.subscribe((categories) => {
@@ -110,5 +113,80 @@ export class AppComponent implements OnInit {
       .then(() => {
         this.router.navigate(['/login']);
       });
+  }
+  
+  /**
+   * 一つ前のカテゴリページに移動する
+   */
+  public onPrevCategory(): void {
+    const currentCategoryId = this.detectCurrentCategoryId();
+    
+    // カテゴリ以外のページを開いている場合は最初のカテゴリに移動する
+    if(!currentCategoryId) {
+      this.router.navigate(['/home'], { queryParams: { categoryId: this.categories[0].id }});
+      return;
+    }
+    
+    // 現在のカテゴリの添字を拾う
+    const currentCategoryIndex = this.categories.findIndex((category) => {
+      return category.id === currentCategoryId;
+    });
+    
+    // 配列の一つ前のカテゴリを拾う
+    // (カテゴリ ID を単純にデクリメントするのは、カテゴリ ID が連番である前提の実装になってしまうため)
+    const prevCategory = this.categories[currentCategoryIndex - 1];
+    
+    // 一つ前のカテゴリがなければ、最後のカテゴリに移動する
+    if(!prevCategory) {
+      this.router.navigate(['/home'], { queryParams: { categoryId: this.categories[this.categories.length - 1].id }});
+      return;
+    }
+    
+    // 一つ前のカテゴリに移動する
+    this.router.navigate(['/home'], { queryParams: { categoryId: prevCategory.id }});
+  }
+  
+  /**
+   * 一つ後のカテゴリページに移動する
+   */
+  public onNextCategory(): void {
+    const currentCategoryId = this.detectCurrentCategoryId();
+    
+    // カテゴリ以外のページを開いている場合は最初のカテゴリに移動する
+    if(!currentCategoryId) {
+      this.router.navigate(['/home'], { queryParams: { categoryId: this.categories[0].id }});
+      return;
+    }
+    
+    // 現在のカテゴリの添字を拾う
+    const currentCategoryIndex = this.categories.findIndex((category) => {
+      return category.id === currentCategoryId;
+    });
+    
+    // 配列の一つ後のカテゴリを拾う
+    const nextCategory = this.categories[currentCategoryIndex + 1];
+    
+    // 一つ後のカテゴリがなければ、最初のカテゴリに移動する
+    if(!nextCategory) {
+      this.router.navigate(['/home'], { queryParams: { categoryId: this.categories[0].id }});
+      return;
+    }
+    
+    // 一つ後のカテゴリに移動する
+    this.router.navigate(['/home'], { queryParams: { categoryId: nextCategory.id }});
+  }
+  
+  /**
+   * 現在開いているページの URL からカテゴリ ID を拾う
+   * 
+   * @return カテゴリ ID。カテゴリ系のページを開いていない場合は null
+   */
+  private detectCurrentCategoryId(): number | null {
+    const match = this.router.url.match((/\/home\?categoryId=([0-9]*)/u));
+    if(!match) {
+      return null;
+    }
+    const currentCategoryId = Number(match[1]);
+    return currentCategoryId;
   }
 }
