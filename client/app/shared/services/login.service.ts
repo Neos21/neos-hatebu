@@ -48,7 +48,7 @@ export class LoginService {
     }
     
     return this.httpClient.post(`${environment.serverUrl}/login`, { userName, password }).toPromise()
-      .then((result: { result: string; id: string|number; userName: string }) => {
+      .then((result: { result: string; id: string | number; userName: string }) => {
         // 成功・LocalStorage にログイン情報を保存する
         const localStorageUserInfo = {
           id      : result.id,

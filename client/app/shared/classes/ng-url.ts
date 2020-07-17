@@ -3,9 +3,9 @@
  */
 export class NgUrl {
   /** ID */
-  public id: string|number;
+  public id: string | number;
   /** ユーザ ID */
-  public userId: string|number;
+  public userId: string | number;
   /** URL */
   public url: string;
   /** 登録日 */

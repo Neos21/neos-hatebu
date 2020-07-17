@@ -52,7 +52,7 @@ export class CategoriesService {
    * @param id カテゴリ ID
    * @return 指定のカテゴリ情報とエントリ一覧
    */
-  public findById(id: string|number): Promise<Category> {
+  public findById(id: string | number): Promise<Category> {
     let targetCategory;
     return this.findAll()
       .then((categories) => {
@@ -84,7 +84,7 @@ export class CategoriesService {
    * @param id カテゴリ ID
    * @return 指定のカテゴリ情報と再スクレイピングしたエントリ一覧
    */
-  public reloadById(id: string|number): Promise<any> {
+  public reloadById(id: string | number): Promise<any> {
     // 再スクレイピング対象のカテゴリ
     const targetCategory = this.categories.find((category) => {
       return category.id === id;

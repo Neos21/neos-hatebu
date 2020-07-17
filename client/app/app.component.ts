@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     // ページ遷移時はサイドメニューを閉じ、ページトップに遷移させる
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+      if(event instanceof NavigationEnd) {
         this.toggleMenu(false);
         window.scrollTo(0, 0);  // RouterModule.forRoot() に scrollPositionRestoration: 'enabled' を設定してみたが、何か動きがカクつくのでそちらは止めた
       }
@@ -67,6 +67,16 @@ export class AppComponent implements OnInit {
     // カテゴリ一覧を受け取る
     this.pageDataService.categories.subscribe((categories) => {
       this.categories = categories;
+    });
+    // カテゴリ別のエントリ数を受け取る
+    this.pageDataService.entryCount.subscribe((entryCount) => {
+      const targetCategoryIndex = this.categories.findIndex((category) => {
+        return category.id === entryCount.categoryId;
+      });
+      if(targetCategoryIndex < 0) {
+        return;  // 不正値
+      }
+      this.categories[targetCategoryIndex].entryCount = entryCount.entryCount;
     });
   }
   

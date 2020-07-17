@@ -3,10 +3,10 @@
  */
 export class NgDomain {
   /** ユーザ ID */
-  public userId: string|number;
+  public userId: string | number;
   /** ドメイン */
   public domain: string;
   
   /** ID (未使用) */
-  public id: string|number;
+  public id: string | number;
 }

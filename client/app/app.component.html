@@ -14,7 +14,12 @@
       <li *ngIf="categories && categories.length">
         <span class="font-weight-bold">カテゴリ</span>
         <ul>
-          <li *ngFor="let category of categories"><button type="button" [routerLink]="['/home']" [queryParams]="{ 'categoryId': category.id }" [routerLinkActive]="'active'">{{ category.name }}</button></li>
+          <li *ngFor="let category of categories">
+            <button type="button" [routerLink]="['/home']" [queryParams]="{ 'categoryId': category.id }" [routerLinkActive]="'active'">
+              <span>{{ category.name }}</span>
+              <span class="entry-count">{{ category.entryCount }}</span>
+            </button>
+          </li>
         </ul>
       </li>
       <li>

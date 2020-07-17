@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 import { Category } from '../classes/category';
+import { EntryCount } from '../classes/entry-count';
 
 /**
  * 画面間でのデータ受け渡しを行うサービス
@@ -23,4 +24,9 @@ export class PageDataService {
   public categoriesSubject: Subject<Category[]> = new Subject<Category[]>();
   /** カテゴリメニュー */
   public categories: Observable<Category[]> = this.categoriesSubject.asObservable();
+  
+  /** カテゴリ別エントリ数の Subject */
+  public entryCountSubject: Subject<EntryCount> = new Subject<EntryCount>();
+  /** カテゴリ別エントリ数 */
+  public entryCount: Observable<EntryCount> = this.entryCountSubject.asObservable();
 }

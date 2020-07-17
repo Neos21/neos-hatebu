@@ -89,7 +89,7 @@ export class NgWordSettingComponent implements OnInit {
    * 
    * @param ngWordId 削除する NG ワードの ID
    */
-  public onRemoveNgWord(ngWordId: string|number): void {
+  public onRemoveNgWord(ngWordId: string | number): void {
     this.message = '';
     
     // サービス内で ngWords の要素を削除している・参照渡しで利用している画面側では操作不要

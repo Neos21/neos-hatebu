@@ -159,7 +159,7 @@ export class NgDataService {
    * @param ngWordId 削除対象の NG ワード ID
    * @return Promise
    */
-  public removeNgWord(ngWordId: string|number): Promise<any> {
+  public removeNgWord(ngWordId: string | number): Promise<any> {
     return this.httpClient.delete(`${environment.serverUrl}/ng-words/${ngWordId}`).toPromise()
       .then((result) => {
         // 参照渡しで利用している画面にも反映されるよう splice() で操作する
@@ -223,7 +223,7 @@ export class NgDataService {
    * @param ngDomainId 削除対象の NG ドメイン ID
    * @return Promise
    */
-  public removeNgDomain(ngDomainId: string|number): Promise<any> {
+  public removeNgDomain(ngDomainId: string | number): Promise<any> {
     return this.httpClient.delete(`${environment.serverUrl}/ng-domains/${ngDomainId}`).toPromise()
       .then((result) => {
         // 参照渡しで利用している画面にも反映されるよう splice() で操作する

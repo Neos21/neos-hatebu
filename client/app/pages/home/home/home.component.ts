@@ -8,6 +8,7 @@ import { NgDataService } from '../../../shared/services/ng-data.service';
 import { PageDataService } from '../../../shared/services/page-data.service';
 import { Category } from '../../../shared/classes/category';
 import { NgUrl } from '../../../shared/classes/ng-url';
+import { EntryCount } from '../../../shared/classes/entry-count';
 
 /**
  * Home Component
@@ -75,6 +76,8 @@ export class HomeComponent implements OnInit {
     this.currentCategory.entries = this.currentCategory.entries.filter((entry) => {
       return entry.url !== url;
     });
+    // フィルタしたエントリ数を渡す
+    this.pageDataService.entryCountSubject.next(new EntryCount(this.currentCategory.id, this.currentCategory.entries.length));
     
     // 記事を削除するための API を叩く
     this.ngDataService.addNgUrl(url);
@@ -93,7 +96,7 @@ export class HomeComponent implements OnInit {
    * 
    * @param categoryId カテゴリ ID
    */
-  public onReloadEntries(categoryId: string|number): void {
+  public onReloadEntries(categoryId: string | number): void {
     this.currentCategory = null;
     this.isLoading = true;
     this.errorMessage = '';
@@ -229,6 +232,8 @@ export class HomeComponent implements OnInit {
         this.isLoading = false;
         // 画面に設定する
         this.currentCategory = currentCategory;
+        // フィルタしたエントリ数を渡す
+        this.pageDataService.entryCountSubject.next(new EntryCount(this.currentCategory.id, this.currentCategory.entries.length));
       })
       .catch((error) => {
         this.isLoading = false;

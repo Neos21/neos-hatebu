@@ -90,7 +90,7 @@ export class NgDomainSettingComponent implements OnInit {
    * 
    * @param ngDomainId 削除する NG ドメインの ID
    */
-  public onRemoveNgDomain(ngDomainId: string|number): void {
+  public onRemoveNgDomain(ngDomainId: string | number): void {
     this.message = '';
     
     // サービス内で ngDomains の要素を削除している・参照渡しで利用している画面側では操作不要

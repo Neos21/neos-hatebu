@@ -5,7 +5,7 @@ import { Entry } from './entry';
  */
 export class Category {
   /** カテゴリ ID */
-  public id: string|number;
+  public id: string | number;
   /** カテゴリ名 */
   public name: string;
   /** RSS URL */
@@ -17,4 +17,6 @@ export class Category {
   
   /** 紐付くエントリ一覧 */
   public entries: Entry[];
+  /** フィルタ済のエントリー数 */
+  public entryCount: number;
 }

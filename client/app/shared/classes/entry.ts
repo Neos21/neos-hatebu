@@ -3,9 +3,9 @@
  */
 export class Entry {
   /** ID */
-  public id: string|number;
+  public id: string | number;
   /** 紐付くカテゴリ ID */
-  public categoryId: string|number;
+  public categoryId: string | number;
   /** 記事タイトル */
   public title: string;
   /** 記事 URL */
@@ -13,7 +13,7 @@ export class Entry {
   /** 記事本文抜粋 */
   public description: string;
   /** ブクマ数 */
-  public count: string|number;
+  public count: string | number;
   /** 日時 */
   public date: string;
   /** Favicon URL */
