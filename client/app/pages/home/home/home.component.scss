@@ -165,8 +165,18 @@ $thumbnail-width: 110px;
 
 .prev-category {
   float: left;
+  
+  // 右利きモード
+  :host-context(.right-hand-mode) & {
+    float: right;
+  }
 }
 
 .next-category {
   float: right;
+  
+  // 右利きモード
+  :host-context(.right-hand-mode) & {
+    float: left;
+  }
 }
