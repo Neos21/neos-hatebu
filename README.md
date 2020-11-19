@@ -25,16 +25,6 @@ __[Enter This Web App](https://neos-hatebu.herokuapp.com/)__
 10. エントリ情報を定期的に自動更新するには、Heroku Scheduler アドオンをインストールし、`$ node bin/crawl.js` を実行するようジョブを設定する
 
 
-## Author
-
-[Neo](http://neo.s21.xrea.com/)
-
-
 ## Links
 
-- [Neo's World](http://neo.s21.xrea.com/)
-- [Corredor](https://neos21.hatenablog.com/)
-- [Murga](https://neos21.hatenablog.jp/)
-- [El Mylar](https://neos21.hateblo.jp/)
-- [Neo's GitHub Pages](https://neos21.github.io/)
-- [GitHub - Neos21](https://github.com/Neos21/)
+- [Neo's World](https://neos21.net/)
