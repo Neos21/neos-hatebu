@@ -164,7 +164,12 @@ $thumbnail-width: 110px;
 }
 
 .category-navigations {
-  margin-top: 4.5rem;
+  margin-top: 5rem;
+  
+  button.btn {
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+  }
   
   .prev-category {
     float: right;

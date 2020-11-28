@@ -69,9 +69,11 @@ export class LoginComponent implements OnInit {
    * 「ログイン」ボタン押下時の処理
    */
   public onSubmit(): void {
+    console.log('ログインボタン押下');
     this.loginService.login(this.loginForm.value.userName, this.loginForm.value.password)
       .then(() => {
         // 成功・二重にログイン処理がされないようガードを設定しておく (LoginService 内でやろうとすると AuthGuard と循環依存するためココで行う)
+        console.log('ログイン成功');
         this.authGuard.isLogined = true;
         this.router.navigate(['/home'], {
           queryParams: {

@@ -3,8 +3,9 @@ import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { AuthGuard } from './shared/guards/auth.guard';
-import { PageDataService } from './shared/services/page-data.service';
 import { Category } from './shared/classes/category';
+import { PageDataService } from './shared/services/page-data.service';
+import { CategoriesService } from './shared/services/categories.service';
 import { LogoutService } from './shared/services/logout.service';
 
 /**
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) private document: any,
     private authGuard: AuthGuard,
     private pageDataService: PageDataService,
+    private categoriesService: CategoriesService,
     private logoutService: LogoutService
   ) { }
   
@@ -113,6 +115,18 @@ export class AppComponent implements OnInit {
    */
   public onTop(): void {
     window.scrollTo(0, 0);
+  }
+  
+  /**
+   * 全更新する
+   */
+  public reloadAll(): void {
+    alert('全更新を開始します。完了後、再度ダイアログが表示されます');
+    this.categoriesService.reloadAll()
+      .then((result) => {
+        console.log('全更新終了', result);
+        alert('全更新が終了しました');
+      });
   }
   
   /**

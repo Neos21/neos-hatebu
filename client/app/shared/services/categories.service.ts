@@ -79,6 +79,24 @@ export class CategoriesService {
   }
   
   /**
+   * 全カテゴリのエントリ一覧を再スクレイピングして取得する
+   * 
+   * @return 結果に関わらず Resolve する
+   */
+  public reloadAll(): Promise<any> {
+    return this.categories.reduce((promise, category) => {
+      return promise
+        .then(() => {
+          console.log('スクレピング開始', category);
+          return this.reloadById(category.id);
+        })
+        .catch((error) => {
+          console.error('スクレイピング失敗・続行', error);
+        });
+    }, Promise.resolve());
+  }
+  
+  /**
    * 指定のカテゴリ ID のエントリ一覧を再スクレイピングして取得する
    * 
    * @param id カテゴリ ID

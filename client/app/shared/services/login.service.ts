@@ -47,9 +47,11 @@ export class LoginService {
       password = md5(inputPassword);
     }
     
+    console.log('ログイン API コール開始');
     return this.httpClient.post(`${environment.serverUrl}/login`, { userName, password }).toPromise()
       .then((result: { result: string; id: string | number; userName: string }) => {
         // 成功・LocalStorage にログイン情報を保存する
+        console.log('ログイン API コール成功');
         const localStorageUserInfo = {
           id      : result.id,
           userName: result.userName,
@@ -58,9 +60,11 @@ export class LoginService {
         localStorage.setItem(appConstants.localStorage.userInfoKey, JSON.stringify(localStorageUserInfo));
         
         // カテゴリ一覧を取得する
+        console.log('ログイン後・カテゴリ一覧取得開始');
         return this.categoriesService.findAll();
       })
       .then((categories) => {
+        console.log('ログイン後・カテゴリ一覧取得成功');
         // メニューに設定する
         this.pageDataService.categoriesSubject.next(categories);
         
