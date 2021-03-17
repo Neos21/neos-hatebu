@@ -25,6 +25,14 @@ __[Enter This Web App](https://neos-hatebu.herokuapp.com/)__
 10. エントリ情報を定期的に自動更新するには、Heroku Scheduler アドオンをインストールし、`$ node bin/crawl.js` を実行するようジョブを設定する
 
 
+## Local Development
+
+- `./.env` Or `./.env-local` : Environment Variables
+- `./client/environments/environment.ts` And `environment.prod.ts` : Server URL
+- `./server/index.js` : CORS
+- `./server/models/model.js` And `./bin/crawl.js` : PostgreSQL Connection
+
+
 ## Links
 
 - [Neo's World](https://neos21.net/)
