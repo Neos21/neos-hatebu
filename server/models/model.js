@@ -19,8 +19,10 @@ const sequelize = new Sequelize(connectionString, {
   // SSL 接続のため指定する
   dialect: 'postgres',
   dialectOptions: {
-    ssl: true,
-    rejectUnauthorized: false
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
   }
 });
 
