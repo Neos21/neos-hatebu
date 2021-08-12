@@ -58,11 +58,13 @@ function createModel() {
   const sequelize = new Sequelize(connectionString, {
     timezone: '+09:00',  // JST タイムゾーン : Sequelize で SELECT すると全て UTC の ISO 形式になっており DB 上の記録と異なる
     logging: false,  // ログ出力
-    // SSL 接続のため指定する
+    // SSL 接続のため指定する : 同様の指定が ./server/models/model.js にもあるので注意
     dialect: 'postgres',
     dialectOptions: {
-      ssl: true,
-      rejectUnauthorized: false
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
     }
   });
   // 各モデルを定義・格納する
