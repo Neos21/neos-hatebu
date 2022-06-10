@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
     updatedAt: false
   });
   
-  NgUrl.sync({ force: true, alter: true });
+  NgUrl.sync();
   
   return NgUrl;
 };
