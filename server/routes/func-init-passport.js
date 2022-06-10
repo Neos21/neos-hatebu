@@ -27,6 +27,7 @@ module.exports = () => {
             id: result.dataValues.id,
             userName: result.dataValues.userName
           };
+          console.log('認証処理 : 成功', { userName, userInfo });
           return done(null, userInfo);  // 成功・第2引数で渡す内容がシリアライズされる
         }
         else {

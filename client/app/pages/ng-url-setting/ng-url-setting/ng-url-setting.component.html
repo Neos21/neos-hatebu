@@ -12,18 +12,33 @@
 
 <ng-container *ngIf="!isLoading && ngUrls && ngUrls.length">
   <p>
-    <span class="count">全 {{ ngUrls.length }} 件</span>
+    <span class="all-counts">全 {{ ngUrls.length }} 件</span>
     <button type="button" class="btn btn-primary" (click)="onToggleShow()">{{ isShownAll ? '省略' : '全件' }}表示</button>
   </p>
   
-  <ol>
-    <li *ngFor="let ngUrl of ngUrls">
-      <div>
-        <span class="date">{{ ngUrl.createdAt }}</span>
-        <span class="url"><a [href]="ngUrl.url" target="_blank">{{ ngUrl.title }}</a></span>
+  <div *ngFor="let ngUrl of ngUrls" [title]="ngUrl.createdAt" class="entry-container">
+    <div class="favicon">
+      <img [src]="ngUrl.faviconUrl" *ngIf="ngUrl.faviconUrl">
+    </div>
+    
+    <a [href]="ngUrl.url" target="_blank" class="entry-info">
+      <div class="title">
+        {{ ngUrl.title }}
       </div>
-    </li>
-  </ol>
+      <div class="description">
+        <div>{{ ngUrl.description }}</div>
+      </div>
+    </a>
+    <div class="entry-side">
+      <div class="thumbnail">
+        <img [src]="ngUrl.thumbnailUrl" *ngIf="ngUrl.thumbnailUrl">
+      </div>
+    </div>
+    <div class="entry-meta">
+      <a href="{{ ngUrl.url | hatebuUrl }}" target="_blank" class="count"><span>{{ ngUrl.count }}</span> Users</a>
+      <span class="date">{{ ngUrl.date }}</span>
+    </div>
+  </div>
 </ng-container>
 
 <p *ngIf="!isLoading && !message && (!ngUrls || !ngUrls.length)" class="text-warning font-weight-bold">NG URL は登録されていません。</p>

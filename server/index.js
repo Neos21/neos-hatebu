@@ -43,8 +43,16 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // CORS を許可する
-app.use((_req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');  // 'http://localhost:8080'
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  if(['localhost:4200', 'localhost:8080'].includes(host)) {
+    console.log('CORS : Allow List', { host, headers: req.headers });
+    res.header('Access-Control-Allow-Origin', `http://${host}`);
+  }
+  else {
+    console.log('CORS : Default', { headers: req.headers });
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');  // 'http://localhost:8080'
+  }
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
