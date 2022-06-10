@@ -1,7 +1,7 @@
 import { Entry } from './entry';
 
 /**
- * カテゴリ情報のクラス
+ * カテゴリ情報
  */
 export class Category {
   /** カテゴリ ID */

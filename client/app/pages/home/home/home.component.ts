@@ -9,6 +9,7 @@ import { PageDataService } from '../../../shared/services/page-data.service';
 import { Category } from '../../../shared/classes/category';
 import { NgUrl } from '../../../shared/classes/ng-url';
 import { EntryCount } from '../../../shared/classes/entry-count';
+import { Entry } from '../../../shared/classes/entry';
 
 /**
  * Home Component
@@ -63,24 +64,30 @@ export class HomeComponent implements OnInit {
   /**
    * 選択した記事を NG URL に追加して削除する
    * 
-   * @param url 削除する記事の URL
+   * @param entry 削除する記事
    */
-  public onRemoveEntry(url: string): void {
+  public onRemoveEntry(entry: Entry): void {
     // 見た目のレスポンスを良くするため、キャッシュにはこの場でデータを作って追加する (id, userId は未入力)
     const ngUrl = new NgUrl();
-    ngUrl.url = url;
-    ngUrl.createdAt = moment.utc().toISOString();
+    ngUrl.title        = entry.title;
+    ngUrl.url          = entry.url;
+    ngUrl.description  = entry.description;
+    ngUrl.count        = entry.count;
+    ngUrl.date         = entry.date;
+    ngUrl.faviconUrl   = entry.faviconUrl;
+    ngUrl.thumbnailUrl = entry.thumbnailUrl;
+    ngUrl.createdAt    = moment.utc().toISOString();
     this.ngDataService.ngUrls.push(ngUrl);
     
     // この場で削除する記事を省いておく (onShowCategory() で処理すると重たいため)
-    this.currentCategory.entries = this.currentCategory.entries.filter((entry) => {
-      return entry.url !== url;
+    this.currentCategory.entries = this.currentCategory.entries.filter((currentEntry) => {
+      return currentEntry.url !== entry.url;
     });
     // フィルタしたエントリ数を渡す
     this.pageDataService.entryCountSubject.next(new EntryCount(this.currentCategory.id, this.currentCategory.entries.length));
     
     // 記事を削除するための API を叩く
-    this.ngDataService.addNgUrl(url);
+    this.ngDataService.addNgUrl(ngUrl);
     
     // ボタンからフォーカスを外す
     try {

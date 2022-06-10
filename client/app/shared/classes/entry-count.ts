@@ -1,4 +1,6 @@
-/** カテゴリ別のエントリ数を保持する */
+/**
+ * カテゴリ別のエントリ数を保持する
+ */
 export class EntryCount {
   /** 紐付くカテゴリ ID */
   public categoryId: string | number;

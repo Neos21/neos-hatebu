@@ -57,7 +57,7 @@
     "express-session": "1.17.0",
     "md5": "2.2.1",
     "moment-timezone": "0.5.28",
-    "node-sass": "4.13.1",
+    "node-sass": "4.14.1",
     "passport": "0.4.1",
     "passport-local": "1.0.0",
     "pg": "7.18.2",

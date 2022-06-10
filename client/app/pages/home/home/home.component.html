@@ -27,8 +27,8 @@
           <img [src]="entry.thumbnailUrl" *ngIf="entry.thumbnailUrl">
         </div>
         <div class="remove">
-          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)" *ngIf="i === 0" accesskey="d">削除する</button>
-          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry.url)" *ngIf="i !== 0">削除する</button>
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry)" *ngIf="i === 0" accesskey="d">削除する</button>
+          <button type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="onRemoveEntry(entry)" *ngIf="i !== 0">削除する</button>
         </div>
       </div>
       <div class="entry-meta">

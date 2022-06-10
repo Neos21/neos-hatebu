@@ -20,7 +20,7 @@
     <li *ngFor="let ngUrl of ngUrls">
       <div>
         <span class="date">{{ ngUrl.createdAt }}</span>
-        <span class="url"><a [href]="ngUrl.url" target="_blank">{{ ngUrl.url }}</a></span>
+        <span class="url"><a [href]="ngUrl.url" target="_blank">{{ ngUrl.title }}</a></span>
       </div>
     </li>
   </ol>

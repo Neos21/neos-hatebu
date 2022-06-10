@@ -6,10 +6,10 @@ const express = require('express');
 const router = express.Router();
 
 // デバッグ用 : マウント・パスを指定していないので全てのアクセスで実行させる
-// router.use((req, _res, next) => {
-//   console.log(`${req.url} [${req.method}] : ${JSON.stringify(req.body)}`);
-//   next();
-// });
+router.use((req, _res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.url} [${req.method}] : ${JSON.stringify(req.body)}`);
+  next();
+});
 
 router.use('/'          , require('./angular-app-router'));  // ルートで Angular アプリを提供する
 router.use('/'          , require('./auth-router'       ));  // ログイン・ログアウト

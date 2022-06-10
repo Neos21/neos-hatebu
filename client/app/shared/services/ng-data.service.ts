@@ -77,12 +77,20 @@ export class NgDataService {
   /**
    * NG URL を追加する : API 通信が失敗しても無視する
    * 
-   * @param url NG URL
+   * @param ngUrl NG URL
    * @return Promise
    */
-  public addNgUrl(url: string): Promise<any> {
+  public addNgUrl(ngUrl: NgUrl): Promise<any> {
     // this.ngUrls への追加は呼び出し元である HomeComponent にて、キャッシュ用データを追加しているのでココでは何もしない
-    return this.httpClient.put(`${environment.serverUrl}/ng-urls`, { ngUrl: url }).toPromise()
+    return this.httpClient.put(`${environment.serverUrl}/ng-urls`, {
+      title       : ngUrl.title,
+      url         : ngUrl.url,
+      description : ngUrl.description,
+      count       : ngUrl.count,
+      date        : ngUrl.date,
+      faviconUrl  : ngUrl.faviconUrl,
+      thumbnailUrl: ngUrl.thumbnailUrl
+    }).toPromise()
       .then((_ngUrl: NgUrl) => {
         // 登録できたデータが返されるが未使用
       })

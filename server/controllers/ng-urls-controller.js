@@ -41,12 +41,24 @@ module.exports = {
    * @param res レスポンス
    */
   upsert: (req, res) => {
-    const userId = req.user.id;
-    const ngUrl = req.body.ngUrl;
+    const userId       = req.user.id;
+    const title        = req.body.title;
+    const url          = req.body.url;
+    const description  = req.body.description;
+    const count        = req.body.count;
+    const date         = req.body.date;
+    const faviconUrl   = req.body.faviconUrl;
+    const thumbnailUrl = req.body.thumbnailUrl;
     
     Model.NgUrl.upsert({
-      userId: userId,
-      url   : ngUrl
+      userId      : userId,
+      title       : title,
+      url         : url,
+      description : description,
+      count       : count,
+      date        : date,
+      faviconUrl  : faviconUrl,
+      thumbnailUrl: thumbnailUrl
     }, {
       returning: true  // 登録した情報を返す : false (未設定だと result は true しか返ってこないが、true にすると [ResultObject, true] になる)
     })
