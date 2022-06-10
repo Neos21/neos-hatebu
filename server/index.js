@@ -28,8 +28,7 @@ app.use(session({
   saveUninitialized: false,  // 未認証時のセッションを保存しないようにする
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7,  // クッキーの有効期限をミリ秒指定 (1週間)
-    secure: false,  // HTTP 利用時は false にする・Heroku 環境でも true にするとうまくセッション管理できなかったので false のままにする
-    sameSite: 'none'  // localhost のクライアントから Heroku 環境へ API コールする際にセッション管理させたいので SameSite 属性を緩い None にする
+    secure: false  // HTTP 利用時は false にする・Heroku 環境でも true にするとうまくセッション管理できなかったので false のままにする
   }
 }));
 
