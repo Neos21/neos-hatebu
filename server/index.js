@@ -28,7 +28,8 @@ app.use(session({
   saveUninitialized: false,  // 未認証時のセッションを保存しないようにする
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7,  // クッキーの有効期限をミリ秒指定 (1週間)
-    secure: false  // HTTP 利用時は false にする・Heroku 環境でも true にするとうまくセッション管理できなかったので false のままにする
+    secure: false,  // HTTP 利用時は false にする・Heroku 環境でも true にするとうまくセッション管理できなかったので false のままにする
+    sameSite: 'none'  // localhost のクライアントから Heroku 環境へ API コールする際にセッション管理させたいので SameSite 属性を緩い None にする
   }
 }));
 
@@ -44,18 +45,13 @@ app.use(bodyParser.json());
 
 // CORS を許可する
 app.use((req, res, next) => {
-  const host = req.headers.host;
-  if(['localhost:4200', 'localhost:8080'].includes(host)) {
-    console.log('CORS : Allow List', { host, headers: req.headers });
-    res.header('Access-Control-Allow-Origin', `http://${host}`);
-  }
-  else {
-    console.log('CORS : Default', { headers: req.headers });
-    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');  // 'http://localhost:8080'
+  const origin = req.headers.origin;
+  if(origin && ['http://localhost:4200', 'http://localhost:8080'].includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
   }
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
   next();
 });
 

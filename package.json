@@ -11,7 +11,7 @@
     "?ng": "echo 'Angular CLI'",
     "ng": "ng",
     "?dev": "echo '開発用のサーバを起動する'",
-    "dev": "ng serve --open",
+    "dev": "ng serve --open --host 0.0.0.0",
     "?build": "echo '本番ビルドを行う'",
     "build": "ng build --prod",
     "?lint": "echo 'Lint を行う'",

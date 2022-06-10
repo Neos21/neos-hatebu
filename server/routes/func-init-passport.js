@@ -43,11 +43,13 @@ module.exports = () => {
   
   // シリアライズ
   passport.serializeUser((userInfo, done) => {
+    console.log('SerializeUser', { userInfo });
     done(null, userInfo);
   });
   
   // デシリアライズ
   passport.deserializeUser((userInfo, done) => {
+    console.log('DeserializeUser', { userInfo });
     done(null, userInfo);
   });
 };
