@@ -1,10 +1,9 @@
-# Neo's Hatebu
+# Neo's Hatebu 1
 
 オレオレはてなブックマーク。
 
-__[Enter This Web App](https://neos-hatebu.herokuapp.com/)__
-
-※ Neo 本人しかログインして利用できません。
+- 後継プロジェクトはコチラ → __[Neo's Hatebu 2](https://github.com/Neos21/neos-hatebu-2)__
+- `https://neos-hatebu.herokuapp.com/` … 2022-09-10 閉鎖
 
 
 ## How To Clone
